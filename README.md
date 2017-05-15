@@ -8,7 +8,8 @@ We will do all our edits here together so that we can present the final product 
 May 9th Call:
 * Introduction
 * TODO: Create a Sankey Diagram for the Clean Stat Data
-  - Decide which package to use to create Sankey Diagrams
-    1. https://christophergandrud.github.io/networkD3/#sankey
-    2. https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey
-  - 
+  1. Decide which package to use to create Sankey Diagrams
+    - https://christophergandrud.github.io/networkD3/#sankey
+    - https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey
+  2. Merge 2016 CleanStat Data from Quarters 1, 2, 3 and 4
+  3. Implement Sankey Diagram with Merged Data Set
