@@ -1,1 +1,4 @@
 Questions:
+*Why are the datasets different sizes? I am guessing adding the datasets may be a new thing given the number of results?
+*Related question: Is this why the variable names may not be the same (e.g. OBJECTID vs OBJECTID_1)
+*Could a data dictionary be provided?
