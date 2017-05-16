@@ -16,7 +16,7 @@ TODO List:
         - Jon (Complete by Wednesday afternoon)
       3. [ ] Implement Sankey Diagram with Merged Data Set
         - @Alex and Min (Complete by Thursday night.)
-   * Analyze call center data and create a Shiny App with the cleaned data
+   * Analyze call center data and create a Shiny App with the cleaned data (Joseph and Conor)
       1. Clean the Data as specified on Issue #8 (https://github.com/datala/sanitation-dashboard/issues/8)
       2. Create various summary statistics (using dplyr or base R packages such as tapply() or table())
       3. Create a static Shiny App with this data
