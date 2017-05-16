@@ -6,10 +6,12 @@ We will do all our edits here together so that we can present the final product 
 
 TODO List:
   * Create a Sankey Diagram for the CleanStat Data
-      1. [ ] Decide which package to use to create Sankey Diagrams 
+      1. [X] Decide which package to use to create Sankey Diagrams 
         - @Alexander-Chan, Someone Else
-        - https://christophergandrud.github.io/networkD3/#sankey
+        - *chosen* https://christophergandrud.github.io/networkD3/#sankey  
+           - Can knit to rmarkdown
         - https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey
+           - cannot knit to rmarkdown
       2. [ ] Merge 2016 CleanStat Data from Quarters 1, 2, 3 and 4
         - Two people
       3. [ ] Implement Sankey Diagram with Merged Data Set
