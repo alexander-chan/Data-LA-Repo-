@@ -7,13 +7,13 @@ We will do all our edits here together so that we can present the final product 
 TODO List:
   * Create a Sankey Diagram for the CleanStat Data
       1. [X] Decide which package to use to create Sankey Diagrams 
-        - @Alexander-Chan, Someone Else
+        - @Alexander-Chan, Min
         - *chosen* https://christophergandrud.github.io/networkD3/#sankey  
            - Can knit to rmarkdown
         - https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey
            - cannot knit to rmarkdown
       2. [ ] Merge 2016 CleanStat Data from Quarters 1, 2, 3 and 4
-        - Two people
+        - Jon
       3. [ ] Implement Sankey Diagram with Merged Data Set
    * Analyze call center data and create a Shiny App with the cleaned data
       1. Clean the Data as specified on Issue #8 (https://github.com/datala/sanitation-dashboard/issues/8)
