@@ -13,8 +13,9 @@ TODO List:
         - https://www.rdocumentation.org/packages/googleVis/versions/0.6.0/topics/gvisSankey
            - cannot knit to rmarkdown
       2. [ ] Merge 2016 CleanStat Data from Quarters 1, 2, 3 and 4
-        - Jon
+        - Jon (Complete by Wednesday afternoon)
       3. [ ] Implement Sankey Diagram with Merged Data Set
+        - @Alex and Min (Complete by Thursday night.)
    * Analyze call center data and create a Shiny App with the cleaned data
       1. Clean the Data as specified on Issue #8 (https://github.com/datala/sanitation-dashboard/issues/8)
       2. Create various summary statistics (using dplyr or base R packages such as tapply() or table())
