@@ -2,7 +2,7 @@
 
 Private Repo for Data LA Project. *For members of UCLA Statistics Only.*
 
-We will do all our edits here together so that we can present the final product that is polished. 
+We will do all our edits here together so that we can present the final polished, product to our client when it is finished.
 
 TODO List:
   * Create a Sankey Diagram for the CleanStat Data
