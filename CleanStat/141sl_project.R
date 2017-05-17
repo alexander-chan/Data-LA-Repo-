@@ -22,7 +22,7 @@ clean <- clean[grep("Q[1-4]", clean$date),]
 #function to read in data, give character string with format yy Q# (e.g. "16 Q2")
 quarter_function <- function(x) {
   quarter <- clean[grep(x, clean$date),]
-  quarter <- quarter$landingPage[1] #may have more than one result but takes in the first, usually the data without grid name
+  quarter <- quarter$landingPage[2] #may have more than one result but takes in the second, usually the grid data, can probably be better implemented
   quarter <- paste(quarter, ".csv", sep= "")
   quarter <- read_csv(quarter)
   return(quarter)
@@ -32,6 +32,7 @@ quarter_function <- function(x) {
 q1 <- quarter_function("16 Q1")
 q2 <- quarter_function("16 Q2")
 q3 <- quarter_function("16 Q3")
-q4 <- quarter_function("16 Q4")
+q4 <- quarter_function("16 Q4") #q4 will fail since we don't have access to grid data, only web map if you look at website
+
 
 
