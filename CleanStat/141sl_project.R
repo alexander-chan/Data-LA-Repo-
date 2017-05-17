@@ -28,6 +28,7 @@ quarter_function <- function(x) {
   return(quarter)
 }
 
+
 q1 <- quarter_function("16 Q1")
 q2 <- quarter_function("16 Q2")
 q3 <- quarter_function("16 Q3")
