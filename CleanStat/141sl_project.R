@@ -1,18 +1,36 @@
 library(RSocrata)
+library(readr)
 
-#getting cleaner where, dirtier
-#cs round = 1 cleanest
+#scrape website
+clean <- ls.socrata("http://geohub.lacity.org/datasets?q=cleanstat")
 
-clean <- ls.socrata("http://geohub.lacity.org/datasets")
+#no longer scraping the clean datasets (?), scrapes all datasets from lacity.org/datasets
 
-q2 <- clean$landingPage[1]
-q2 <- paste(q2, ".csv", sep = "")
-q2 <- read_csv(q2)
 
-q4 <- clean$landingPage[2]
-q4 <- paste(q4, ".csv", sep = "")
-q4 <- read_csv(q4)
+#subset data to those with "clean" in title
+title <- clean$title
+title <- toupper(title)
+index <- grep("CLEAN", title)
+clean <- clean[index,]
 
-q3 <- clean$landingPage[3]
-q3 <- paste(q3, ".csv", sep = "")
-q3 <- read_csv(q3)
+#add column of last 4 characters for year and quarter (e.g. 16 Q4)
+clean$date <- substr(clean$title, nchar(clean$title)-4, nchar(clean$title))
+#remove any observations that do not have Q# format
+clean <- clean[grep("Q[1-4]", clean$date),]
+
+
+#function to read in data, give character string with format yy Q# (e.g. "16 Q2")
+quarter_function <- function(x) {
+  quarter <- clean[grep(x, clean$date),]
+  quarter <- quarter$landingPage[1] #may have more than one result but takes in the first, usually the data without grid name
+  quarter <- paste(quarter, ".csv", sep= "")
+  quarter <- read_csv(quarter)
+  return(quarter)
+}
+
+q1 <- quarter_function("16 Q1")
+q2 <- quarter_function("16 Q2")
+q3 <- quarter_function("16 Q3")
+q4 <- quarter_function("16 Q4")
+
+
