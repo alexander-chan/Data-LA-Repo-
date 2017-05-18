@@ -28,10 +28,11 @@ nodes$name <- as.character(nodes$name)
 nodes
 
 
-links <- data.frame(source = c(rep("1", 3), rep("2", 3), rep("3", 3)), target = rep(1:3, 3) )
+links <- data.frame(source = c(rep("1", 3), rep("2", 3), rep("3", 3)), target = rep(4:6, 3) )
 links$value <- as.integer(transition)
 links$source <- as.integer(paste(links$source))
-
+str(links)
+links
 
 cleanstat <- list(nodes = nodes, links = links)
 
