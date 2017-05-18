@@ -46,6 +46,7 @@ q1$CSScore[index] <- 2
 index <- which(q1$CSScore > 2.5)
 q1$CSScore[index] <- 3
 
+names(q1)[29] <- "score_round_q1"
 
 #all NameInt
 names(q2)[9]
