@@ -18,6 +18,8 @@ q2q3 %>% head
 transition <- table(q2q3$q2q3_change)
 transition
 
+## Network D3
+
 install.packages("networkD3")
 library(networkD3)
 nodes <- data.frame(c("Q2 #1's", "Q2 #2's", "Q2 #3's", "Q3 #1's", "Q3 #2's", "Q3 #3's"))
@@ -28,10 +30,10 @@ nodes$name <- as.character(nodes$name)
 nodes
 
 
-links <- data.frame(source = c(rep("1", 3), rep("2", 3), rep("3", 3)), target = rep(4:6, 3) )
+links <- data.frame(source = c(rep("1", 3), rep("2", 3), rep("3", 3)), target = rep(1:3, 3) )
 links$value <- as.integer(transition)
 links$source <- as.integer(paste(links$source))
-str(links)
+links <- rbind( c(0,1,1015), links)
 links
 
 cleanstat <- list(nodes = nodes, links = links)
@@ -39,6 +41,22 @@ cleanstat <- list(nodes = nodes, links = links)
 sankeyNetwork(Links = cleanstat$links, Nodes = cleanstat$nodes, Source = 'source',
               Target = 'target', Value = 'value', NodeID = 'name')
 
+## GoogleVis Sankey
+df <- data.frame(W2=c(rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2 #3",3)),
+  Q3=c(rep(c("Q3 #1", "Q3 #2", "Q3 #3"),3)),
+  weights=c(
+    c(917, 34, 64, 29, 13, 32, 14, 4, 28) ) )
 
+require(googleVis)
+cleanStat_sankey <- gvisSankey(df, from="Q2", 
+                               to="Q3", weight="Count",
+                               options=list(
+                                 height=500,
+                                 width=1000,
+                                 caption="Flow of CleanStat Ratings in Los Angeles from 2016 Q2 to Q3",
+                                 sankey="{link:{color:{fill:'lightblue'}}}"
+                               ))
+plot(cleanStat_sankey)
+cleanStat_sankey$html
 
-
+df
