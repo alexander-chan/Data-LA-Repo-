@@ -38,7 +38,7 @@ q3 <- quarter_function("16 Q3")
 names(q2)[35] <- "score_round_q2" #Q2_CS_Score_Round
 names(q3)[14] <- "score_round_q3" #score_round_q3
 
-q1$CSScore_oringal <- q1$CSScore #save original scores
+q1$CSScore_original <- q1$CSScore #save original scores
 index <- which(q1$CSScore < 1.5) #manually round
 q1$CSScore[index] <- 1
 index <- which(q1$CSScore < 2.5 & q1$CSScore >1)
