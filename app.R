@@ -37,8 +37,6 @@ warm_gradient <- data_frame(
 
 requests2017 <- read_csv('C:/Users/conor/Downloads/MyLA311_Service_Request_Data_2017.csv')
 
-
-library(lubridate)
 library(zoo)
 library(dplyr)
 requests2017 <- requests2017[,c(1,2,3,4,5,6,7,8,9,10,21,22,23,24,28,29,31,32,33)]
