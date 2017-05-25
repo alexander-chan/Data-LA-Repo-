@@ -1,4 +1,4 @@
-install.packages("googleVis")
+#install.packages("googleVis")
 df <- data.frame(origin=c(
   rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2#3",3)),
   visit=c(

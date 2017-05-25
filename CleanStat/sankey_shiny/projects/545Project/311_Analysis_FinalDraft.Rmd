@@ -1,0 +1,439 @@
+---
+title: "DSO 545 Final Project"
+author: "Jason Cheves, David Edison, Dan Fisher, Ahmed Raza, Saagar Sarin, Jason Walston"
+output: pdf_document
+---
+
+```{r,message=FALSE,warning=FALSE,echo=FALSE}
+library(dplyr)
+library(ggmap)
+library(lubridate)
+library(stringr)
+
+load("data311.Rda")
+load("hvc.Rda")
+load("stats.Rda")
+
+data2 <- data %>% 
+  filter(RequestSource != "Driver Self Report")
+
+la <- qmap("los angeles", color = 'bw', zoom = 10, maptype = "road")
+sr <- qmap("skid row", color = 'bw', zoom = 15, maptype = "road")
+ba <- qmap("90077 los angeles", color = 'bw', zoom = 13, maptype = "road")
+sc <- qmap("University of Southern California Los Angeles", zoom = 14,col = 'bw')
+
+skidrow <- data %>% 
+  filter(ZipCode == "90013", RequestType %in% c("Graffiti Removal",
+                                                "Homeless Encampment","Bulky Items",
+                                                "Single Streetlight Issue","Illegal Dumping Pickup"))
+
+belair <- data %>% 
+  filter(ZipCode == "90077", RequestType %in% c("Metal/Household Appliances",
+                                                "Electronic Waste","Bulky Items",
+                                                "Single Streetlight Issue","Dead Animal Removal"))
+
+usc <- data %>% 
+  filter(ZipCode == "90007", RequestType %in% c("Graffiti Removal", "Bulky Items",
+                                                "Illegal Dumping Pickup", "Metal/Household Appliances",
+                                                "Electronic Waste"))
+
+```
+
+# Business Goal
+
+## Increase efficiency of 311 requests in LA both by increasing usage of the 311 Mobile App and by optimizing call center operations to maximize efficiency.  
+
+# Data
+
+## We used the "MyLA311_Service_Request_Data_2016.csv" dataset and limited that to only include requests made in 2016.
+
+## We also used the "311_Call_Center_Tracking_Data.csv" dataset and limited that to only include the most recent year included (June 2014 to May 2015)
+
+\newpage    
+
+# Preliminary Analysis
+
+## We looked at the request source to determine the most common method of making 311 reports to the city of LA. We excluded "Driver Self Report" since these are not citizens making requests, but rather paid field techs fixing problems themselves.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data %>% 
+  group_by(RequestSource) %>% 
+  summarise(perc = n()*100/nrow(data)) %>% 
+  arrange(desc(perc))  %>% 
+  slice(1:5) %>% 
+  ggplot(aes(reorder(RequestSource,-perc),perc))+
+  geom_bar(stat = "identity", fill = "red")+
+  labs(title = "Request Source for city of LA",
+       y = '% Requests',x='')
+```
+
+\newpage
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data %>% 
+  filter(RequestSource != "Driver Self Report") %>% 
+  group_by(RequestSource) %>% 
+  summarise(perc = n()*100/(nrow(data)-159701)) %>% 
+  arrange(desc(perc))  %>% 
+  slice(1:4) %>% 
+  ggplot(aes(reorder(RequestSource,-perc),perc))+
+  geom_bar(stat = "identity", fill = "blue")+
+  labs(title = "Request Source by Citizens for city of LA",
+       y = '% Requests',x='')
+```
+
+## As can clearly be seen, Calls are still dominating over the mobile app for requests. 
+
+\newpage
+
+## Where are these calls coming from? 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data2 <- data %>% 
+  filter(RequestSource == "Call")
+
+la +
+  stat_density2d(data = data2, aes(Longitude,Latitude,fill =..level..,alpha = ..level..),
+                 geom = "polygon")+
+  scale_fill_gradient(high = "red", low = "orange")+
+  scale_alpha(guide = F)+
+  ggtitle("Heatmap for 311 requests -- Calls")
+
+data2 <- data %>% 
+  filter(RequestSource == "Mobile App")
+```
+
+\newpage
+
+## Where are the mobile app requests coming from?
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+la +
+  stat_density2d(data = data2, aes(Longitude,Latitude,fill =..level..,alpha = ..level..),
+                 geom = "polygon")+
+  scale_fill_gradient(high = "red", low = "orange")+
+  scale_alpha(guide = F)+
+  ggtitle("Heatmap for 311 requests -- Mobile App")
+```
+
+\newpage
+
+# Income Analysis
+
+## Join census data on income for each ZIP code in LA. Define "high income" ZIP codes as those with income per capita > $50,000 and "low income" ZIP codes as those with income < $ 16,000.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+rich <- data %>% 
+  filter(income > 50000)
+
+poor <- data %>% 
+  filter(income < 16000)
+
+rich <- rich %>% 
+  filter(RequestSource == "Call")
+
+poor <- poor %>% 
+  filter(RequestSource == "Call")
+
+la +
+  geom_point(data = poor, aes(Longitude,Latitude), col = "red", alpha = .01, shape = 16)+
+  geom_point(data = rich, aes(Longitude,Latitude), col = "green", alpha = .01, shape = 16)+
+  ggtitle("High Income (green) vs. Low Income (red) for 311 Requests -- Call")
+```
+\newpage
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+rich <- data %>% 
+  filter(income > 50000)
+
+poor <- data %>% 
+  filter(income < 16000)
+
+rich <- rich %>% 
+  filter(RequestSource == "Mobile App")
+
+poor <- poor %>% 
+  filter(RequestSource == "Mobile App")
+
+la +
+  geom_point(data = poor, aes(Longitude,Latitude), col = "red", alpha = .01, shape = 16)+
+  geom_point(data = rich, aes(Longitude,Latitude), col = "green", alpha = .01, shape = 16)+
+  ggtitle("High Income (green) vs. Low Income (red) for 311 Requests -- Mobile App")
+```
+
+## Low income ZIP codes seem to use the mobile App more frequently.
+
+\newpage
+
+## Breakdown for types of Requests for both high income and low income ZIP codes.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+rich <- data %>% 
+  filter(income > 50000 & RequestSource != "Driver Self Report")
+
+poor <- data %>% 
+  filter(income < 16000 & RequestSource != "Driver Self Report")
+
+rich %>% 
+  group_by(RequestType) %>% 
+  summarise(perc = n()*100/nrow(rich)) %>% 
+  arrange(desc(perc)) %>% 
+  slice(1:5) %>% 
+  ggplot(aes(reorder(RequestType,-perc),perc))+
+  geom_bar(stat = "identity", fill = "green")+
+  labs(title = "Citizen Request Type for High Income ZIP codes",
+       y = '% Requests',x='')+
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+poor %>% 
+  group_by(RequestType) %>% 
+  summarise(perc = n()*100/nrow(poor)) %>% 
+  arrange(desc(perc))  %>% 
+  slice(1:5) %>% 
+  ggplot(aes(reorder(RequestType,-perc),perc))+
+  geom_bar(stat = "identity", fill = "red")+
+  labs(title = "Citizen Request Type for Low Income ZIP codes",
+       y = '% Requests',x='')+
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+\newpage
+
+## Taking a closer look at specific ZIP codes
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+sr +
+  geom_jitter(data = skidrow, aes(Longitude,Latitude, color = RequestType),
+              alpha = .15, size = 4, shape = 16)+
+  scale_color_manual(values = c("red","blue","black","green","yellow"))+
+  guides(color = guide_legend(override.aes = list(alpha = 1)))+
+  labs(title = "Skidrow (90013)", color = "Request")
+
+sc +
+  geom_jitter(data = usc, aes(Longitude,Latitude, color = RequestType),
+              alpha = .15, size = 4, shape = 16)+
+  scale_color_manual(values = c("red","darkgreen","blue","green","purple"))+
+  guides(color = guide_legend(override.aes = list(alpha = 1)))+
+  labs(title = "USC (90007)", color = "Request")
+
+ba +
+  geom_jitter(data = belair, aes(Longitude,Latitude, color = RequestType),
+              size = 4, shape = 16, alpha = .15)+
+  scale_color_manual(values = c("red","orange","darkgreen","purple","yellow"))+
+  guides(color = guide_legend(override.aes = list(alpha = 1)))+
+  labs(title = "Bel Air (90077)", color = "Request")
+```
+
+\newpage
+
+# Further Analysis 
+
+## We also did some analysis on the 311 call center data, and found that 38.4% of requests were transferred to other city departments. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+load("calls.Rda")
+
+transfer <- calls %>% 
+  filter(transfer == T)
+
+calls_transferred <- sum(calls$transfer)
+total_calls <- nrow(calls)
+```
+
+```{r,warning=FALSE,message=FALSE}
+calls_transferred/total_calls
+```
+
+## Additionally, the vast majority of these transfers were to the same few departments.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+transfer %>% 
+  group_by(Department.Name) %>% 
+  summarise(count = n()/356519) %>% 
+  arrange(desc(count)) %>% 
+  slice(1:8) %>% 
+  ggplot(aes(reorder(Department.Name,-count),count))+
+  geom_bar(stat = "identity", fill = c("red",rep("orange",4),rep("yellow",3)), col = "black")+
+  scale_x_discrete(labels = c("Building/Safety","Transportation","LAPD",
+                              "Sanitation","Street Services","Water and Power","Housing/Community",
+                              "Animal Services"))+
+  labs(title = "Transfers by Department", x = "", y = "% of Transfers")+
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+\newpage
+
+# (The following graphs are only for ZIP codes with at least 100 total 311 Requests)
+
+## We calculated a variable for percent of citizen requests that were created by the app for each ZIP code, and found that the ZIP codes with high percentages and low percentages were geographically clustered. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+la +
+  geom_point(data = join, aes(lon,lat,col=percent_mobile_nodsr),
+             size = 5, alpha = .7)+
+  scale_color_gradient(high = "red",low="yellow")+
+  labs(color = "% Mobile", title = "Percent of Citizen 311 reports by Mobile App by ZIP code")
+```
+
+## The "hot spots" on the previous graph look very similar to the low income areas in our income analysis, and the "cold spots" look very similar to the high income spots in our income analysis. The following graph shows that this relationship is indeed significant.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+ggplot(join,aes(income,percent_mobile_nodsr))+
+  geom_point()+
+  geom_smooth(method = "lm", fullrange = T, color = "red", level = .9)+
+  scale_x_continuous(limits = c(10000,80000),
+                     breaks = seq(20000,80000,20000),
+                     labels = c("$20K","$40K","$60K","$80K"),
+                     expand = c(0,0))+
+  labs(x = "Income per Capita", y = "% Mobile",
+       title = "Income vs % Mobile by ZIP Code")
+```
+
+```{r,echo=FALSE,warning=FALSE}
+anova(lm(join$percent_mobile_nodsr ~ join$income))
+```
+
+\newpage
+
+## Looking at the average hour of the day for percent mobile reports, we also found a strong relationship. Higher percentages were negatively correlated with higher hours (i.e. areas with high percentages saw the average time for the mobile report be earlier in the day). This relationship was statistically significant. 
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+ggplot(join,aes(mobile_hour,percent_mobile_nodsr))+
+  geom_point()+
+  geom_smooth(method = "lm", fullrange = T, color = "red", level = .9)+
+  scale_x_continuous(limits = c(12,15),
+                     labels = c("12PM","1PM","2PM","3PM"),
+                     expand = c(0,0))+
+  labs(x = "Hour of the Day", y = "% Mobile",
+       title = "Hour of the day vs % Mobile by ZIP Code")
+```
+
+```{r,echo=FALSE,warning=FALSE}
+anova(lm(join$percent_mobile_nodsr ~ join$mobile_hour))
+```
+
+\newpage
+
+## The following are sample distributions of the hour of the day for mobile reports for a select few ZIP codes. The upper 2 (90021 and 90013) are dowtown ZIP codes with a high % mobile and low income, and the bottom 2 (90049 and 90077) are Northwest LA ZIP codes with low % mobile and high income.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+data %>% 
+  filter(ZipCode %in% c("90021","90013","90077","90049")
+         & RequestSource == "Mobile App") %>% 
+  ggplot(aes(hour(CreatedDate),..density..))+
+  geom_density(col = NA, fill = "red",alpha = .5)+
+  geom_line(stat = "density")+
+  facet_wrap(~ZipCode)+
+  scale_x_continuous(breaks = 0:23)+
+  labs(x = 'hour',y='',title = 'Mobile App Use Frequency')
+```
+
+## This analysis suggests that many of the individuals are busy commuters on their way to work, as the areas such as downtown with large amounts of app usage are in areas with many businesses.
+
+\newpage
+
+## Further evidence for this may be found by looking at a heatmap of mobile app usage overlayed with metro stops. Areas with a large number of metro stops have high usage and areas with zero to very few metro stops (such as the SF Valley) have low usage.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+la <- qmap("Los Angeles", zoom = 11, color = 'bw')
+
+load("metro.Rda")
+
+metro <- metro %>% 
+  filter(str_detect(Address,"Los Angeles")==T)
+
+data2 <- data %>% 
+  filter(RequestSource == "Mobile App")
+
+la +
+  stat_density2d(data = data2, aes(Longitude,Latitude,fill =..level..,alpha = ..level..),
+                 geom = "polygon")+
+  scale_fill_gradient(high="red",low="yellow")+
+  geom_point(data = metro, aes(lon,lat), size = 2, col = "blue",shape = 16)+
+  ggtitle("Heatmap for Mobile App Requests with Metro Stops")+
+  scale_alpha(guide = F)
+```
+
+\newpage
+
+## Metro stops coincide perhaps even more strongly with areas with a high percentage of mobile app users.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+la <- qmap("Los Angeles", zoom = 10, color = 'bw')
+
+la +
+  geom_point(data = join, aes(lon,lat,col=percent_mobile_nodsr),
+             size = 5, alpha = .7)+
+  scale_color_gradient(high = "red",low="yellow")+
+  geom_point(data = metro, aes(lon,lat), size = 2, col = "blue",shape = 16)+
+  labs(title = "% Requests via Mobile App with Metro Stops", color = "% mobile")
+```
+
+\newpage
+
+## Finally, we looked at addresses which had a high number of callers. The following graph shows a heatmap for all addresses which had more than 30 311 calls this year.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+hvc1 <- hvc %>% 
+  filter(count > 29)
+
+la +
+  stat_density2d(data = hvc1, aes(lon,lat,fill =..level..,alpha = ..level..),
+                 geom = "polygon")+
+  scale_fill_gradient(high = "red", low = "orange")+
+  scale_alpha(guide = F)+
+  ggtitle("Heatmap for Locations with > 30 311 Calls")
+```
+
+## It is also not the case that these addresses also get a lot of request via the mobile app. Only 3.7% of all 311 requests at these high-volume call locations came from the mobile app, significantly less than the city of LA as a whole.
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE,eval = FALSE}
+hvc2 <- data %>% 
+  filter(Address %in% hvc1$Address & RequestSource != "Driver Self Report") 
+
+# Percentage of all reports in high volume call locations made by mobile app:
+
+hvc3 <- nrow(hvc2 %>% filter(RequestSource == "Mobile App"))*100/nrow(hvc2)
+
+as.numeric(hvc3)
+```
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE}
+hvc2 <- data %>% 
+  filter(Address %in% hvc1$Address & RequestSource != "Driver Self Report") 
+
+data2 <- data %>% 
+  filter(RequestSource != "Driver Self Report")
+
+p1 <- as.numeric(nrow(hvc2 %>% filter(RequestSource == "Mobile App")))
+p2 <- as.numeric(nrow(hvc2))
+p3 <- as.numeric(nrow(data2 %>% filter(RequestSource == "Mobile App")))
+p4 <- as.numeric(nrow(data2))
+
+prop.test(x = c(231,124298), n = c(6239,698347))
+```
+
+\newpage
+
+# Recommendations
+
+## Based on all of our analysis, we have the following recommendations:
+
+### 1) Add a Phone Directory to 311 Phone Lines
+
+311 should add a directory menu at the beginning of every call that would list off numberpad options to automatically transfer to one of the most common transfer departments. Since 38.4% of calls end up getting transferred, and 87.4% of those transfers are to the top 8 departments, this could in theory reduce the amount of calls to the 311 operators by as much as 33.5%. Given the high cost per each call, adding this menu could save the city money.
+
+### 2) Target High Volume Callers
+
+We have identified 134 specific addresses which have made over 30 311 calls so far in 2016. Additionally, these addresses have extremely low app usage. 311 should specifically target these addresses and inform them of the app. One potential marketing strategy is that for the addresses in this list that are apartment complexes, inform the manager of the complex of the app. It is likely that it was he or she who was making all of the requests, and if not, he or she could easily forward an email to the tenants to tell them about the app. Another marketing strategy would be to set up fliers for the app outside of these locations; it would be relatively inexpensive and it is certain that individuals who had previsouly used 311 for phone calls would see them. 
+
+### 3) Target Commuter Areas
+
+Through our analysis, we have gleaned that people who commute to downtown for work are very likely to use the app. The evidence supporting this is the fact that the zipcodes which see the highest proportion of people using the app all have an earlier average hour (we see a peak around 9AM) for reports and a higher volumer of Metro lines located in the proximity. Since these individuals show a propensity for using the app, it is likely of high use to them, so ads for the app on Metro lines or elsewhere with heavy commuter traffic would be highly effective. 
+
+
+
+
+
+
+
+
+
+

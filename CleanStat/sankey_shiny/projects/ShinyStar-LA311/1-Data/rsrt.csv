@@ -1,0 +1,132 @@
+"","RequestType","RequestSource","count"
+"1","Bulky Items","Call",403756
+"2","Graffiti Removal","Driver Self Report",156467
+"3","Bulky Items","Mobile App",71450
+"4","Metal/Household Appliances","Call",63058
+"5","Illegal Dumping Pickup","Call",47246
+"6","Graffiti Removal","Mobile App",46926
+"7","Electronic Waste","Call",43861
+"8","Graffiti Removal","Self Service",40236
+"9","Bulky Items","Self Service",39359
+"10","Graffiti Removal","Call",28138
+"11","Dead Animal Removal","Call",26944
+"12","Bulky Items","Email",19640
+"13","Illegal Dumping Pickup","Mobile App",11235
+"14","Other","Mobile App",6949
+"15","Other","Self Service",6719
+"16","Single Streetlight Issue","Call",5520
+"17","Homeless Encampment","Call",5386
+"18","Single Streetlight Issue","Self Service",4863
+"19","Homeless Encampment","Mobile App",4810
+"20","Electronic Waste","Mobile App",4450
+"21","Illegal Dumping Pickup","Self Service",3800
+"22","Graffiti Removal","Email",3634
+"23","Illegal Dumping Pickup","Email",3584
+"24","Metal/Household Appliances","Mobile App",3516
+"25","Homeless Encampment","Self Service",3187
+"26","Single Streetlight Issue","Email",3179
+"27","Metal/Household Appliances","Self Service",3100
+"28","Multiple Streetlight Issue","Call",2696
+"29","Dead Animal Removal","Mobile App",2369
+"30","Electronic Waste","Self Service",2343
+"31","Metal/Household Appliances","Email",2337
+"32","Dead Animal Removal","Self Service",1776
+"33","Single Streetlight Issue","Mobile App",1672
+"34","Bulky Items","Driver Self Report",1534
+"35","Electronic Waste","Email",1488
+"36","Report Water Waste","Mobile App",1137
+"37","Multiple Streetlight Issue","Mobile App",920
+"38","Illegal Dumping Pickup","Council's Office",769
+"39","Multiple Streetlight Issue","Self Service",721
+"40","Homeless Encampment","Email",673
+"41","Feedback","Mobile App",578
+"42","Other","Call",436
+"43","Multiple Streetlight Issue","Email",434
+"44","Bulky Items","Voicemail",358
+"45","Report Water Waste","Call",239
+"46","Graffiti Removal","Voicemail",235
+"47","Bulky Items","Council's Office",183
+"48","Feedback","Call",178
+"49","Report Water Waste","Self Service",166
+"50","Dead Animal Removal","Voicemail",158
+"51","Illegal Dumping Pickup","Voicemail",150
+"52","Feedback","Self Service",129
+"53","Homeless Encampment","Council's Office",126
+"54","Dead Animal Removal","Email",116
+"55","Single Streetlight Issue","Voicemail",108
+"56","Other","Driver Self Report",99
+"57","Multiple Streetlight Issue","Voicemail",98
+"58","Bulky Items","Queue Initiated Customer Call",94
+"59","Bulky Items","Fax",83
+"60","Illegal Dumping Pickup","Walk-in",83
+"61","Feedback","Email",76
+"62","Graffiti Removal","Council's Office",74
+"63","Other","Web Form",71
+"64","Graffiti Removal","Web Form",63
+"65","Other","Email",49
+"66","Graffiti Removal","Fax",45
+"67","Metal/Household Appliances","Voicemail",36
+"68","Homeless Encampment","Voicemail",34
+"69","Report Water Waste","Email",34
+"70","Single Streetlight Issue","Council's Office",31
+"71","Single Streetlight Issue","Fax",28
+"72","Bulky Items","Walk-in",27
+"73","Electronic Waste","Council's Office",25
+"74","Bulky Items","Web Form",24
+"75","Illegal Dumping Pickup","Driver Self Report",24
+"76","Dead Animal Removal","Driver Self Report",17
+"77","Metal/Household Appliances","Queue Initiated Customer Call",17
+"78","Other","Council's Office",17
+"79","Electronic Waste","Fax",16
+"80","Multiple Streetlight Issue","Fax",16
+"81","Other","Letter",16
+"82","Metal/Household Appliances","Council's Office",15
+"83","Illegal Dumping Pickup","Web Form",14
+"84","Graffiti Removal","Queue Initiated Customer Call",11
+"85","Bulky Items","Twitter",10
+"86","Electronic Waste","Queue Initiated Customer Call",10
+"87","Illegal Dumping Pickup","Queue Initiated Customer Call",10
+"88","Multiple Streetlight Issue","Council's Office",10
+"89","Electronic Waste","Voicemail",9
+"90","Report Water Waste","Voicemail",9
+"91","Single Streetlight Issue","Driver Self Report",8
+"92","Homeless Encampment","Web Form",7
+"93","Metal/Household Appliances","Fax",7
+"94","Feedback","Voicemail",6
+"95","Illegal Dumping Pickup","Twitter",6
+"96","Bulky Items","Mayor's Office",5
+"97","Metal/Household Appliances","Walk-in",5
+"98","Dead Animal Removal","Council's Office",4
+"99","Dead Animal Removal","Radio",4
+"100","Electronic Waste","Walk-in",4
+"101","Graffiti Removal","Twitter",3
+"102","Illegal Dumping Pickup","Fax",3
+"103","Metal/Household Appliances","Driver Self Report",3
+"104","Other","Walk-in",3
+"105","Report Water Waste","Council's Office",3
+"106","Single Streetlight Issue","Walk-in",3
+"107","Dead Animal Removal","Twitter",2
+"108","Graffiti Removal","Walk-in",2
+"109","Homeless Encampment","Driver Self Report",2
+"110","Homeless Encampment","Twitter",2
+"111","Metal/Household Appliances","Mayor's Office",2
+"112","Multiple Streetlight Issue","Web Form",2
+"113","Bulky Items","Radio",1
+"114","Dead Animal Removal","Mayor's Office",1
+"115","Dead Animal Removal","Queue Initiated Customer Call",1
+"116","Dead Animal Removal","Walk-in",1
+"117","Feedback","Mayor's Office",1
+"118","Graffiti Removal","Radio",1
+"119","Graffiti Removal","TDD/ NexTalk",1
+"120","Homeless Encampment","Fax",1
+"121","Illegal Dumping Pickup","City Attorney",1
+"122","Illegal Dumping Pickup","Mayor's Office",1
+"123","Illegal Dumping Pickup","Radio",1
+"124","Metal/Household Appliances","Twitter",1
+"125","Multiple Streetlight Issue","Driver Self Report",1
+"126","Multiple Streetlight Issue","Letter",1
+"127","Other","Mayor's Office",1
+"128","Other","Queue Initiated Customer Call",1
+"129","Report Water Waste","Queue Initiated Customer Call",1
+"130","Single Streetlight Issue","Twitter",1
+"131","Single Streetlight Issue","Web Form",1

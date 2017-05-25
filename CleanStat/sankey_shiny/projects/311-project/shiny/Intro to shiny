@@ -1,0 +1,11 @@
+##
+Here are our code for shniy.
+
+We create 3 tabs.
+
+The first tab is overview of 2011-2015 and 2016 data. Users can check different data range data by changing data at the left part tab.
+
+The second tab is zipmap and heatmap of call resolution. We divided call resolution into 5 kinds. Users can choose different kind of call
+to check the distribution of zipcode and time..
+
+The third tab displays the effienct of 311 project.

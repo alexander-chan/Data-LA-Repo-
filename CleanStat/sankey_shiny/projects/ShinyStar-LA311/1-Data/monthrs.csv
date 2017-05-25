@@ -1,0 +1,146 @@
+"X","RequestSource","month","count","monnum"
+1,"Call","Apr",40450,4
+2,"Call","Aug",86338,8
+3,"Call","Dec",34571,12
+4,"Call","Feb",38960,2
+5,"Call","Jan",36630,1
+6,"Call","Jul",43867,7
+7,"Call","Jun",46896,6
+8,"Call","Mar",43531,3
+9,"Call","May",44285,5
+10,"Call","Nov",58868,11
+11,"Call","Oct",74615,10
+12,"Call","Sep",78447,9
+13,"City Attorney","Nov",1,11
+14,"Council's Office","Apr",183,4
+15,"Council's Office","Aug",59,8
+16,"Council's Office","Dec",68,12
+17,"Council's Office","Feb",164,2
+18,"Council's Office","Jan",300,1
+19,"Council's Office","Jul",24,7
+20,"Council's Office","Jun",31,6
+21,"Council's Office","Mar",160,3
+22,"Council's Office","May",58,5
+23,"Council's Office","Nov",96,11
+24,"Council's Office","Oct",79,10
+25,"Council's Office","Sep",35,9
+26,"Driver Self Report","Apr",11647,4
+27,"Driver Self Report","Aug",14683,8
+28,"Driver Self Report","Dec",10,12
+29,"Driver Self Report","Feb",13129,2
+30,"Driver Self Report","Jan",6721,1
+31,"Driver Self Report","Jul",21298,7
+32,"Driver Self Report","Jun",14824,6
+33,"Driver Self Report","Mar",16161,3
+34,"Driver Self Report","May",13832,5
+35,"Driver Self Report","Nov",11169,11
+36,"Driver Self Report","Oct",14591,10
+37,"Driver Self Report","Sep",20090,9
+38,"Email","Apr",1110,4
+39,"Email","Aug",2207,8
+40,"Email","Dec",4366,12
+41,"Email","Feb",1383,2
+42,"Email","Jan",2558,1
+43,"Email","Jul",647,7
+44,"Email","Jun",553,6
+45,"Email","Mar",768,3
+46,"Email","May",808,5
+47,"Email","Nov",4638,11
+48,"Email","Oct",8503,10
+49,"Email","Sep",7703,9
+50,"Fax","Apr",15,4
+51,"Fax","Aug",5,8
+52,"Fax","Dec",16,12
+53,"Fax","Feb",25,2
+54,"Fax","Jan",2,1
+55,"Fax","Jul",1,7
+56,"Fax","Jun",62,6
+57,"Fax","Mar",5,3
+58,"Fax","May",20,5
+59,"Fax","Nov",8,11
+60,"Fax","Oct",30,10
+61,"Fax","Sep",10,9
+62,"Letter","Aug",5,8
+63,"Letter","Mar",1,3
+64,"Letter","Oct",1,10
+65,"Letter","Sep",10,9
+66,"Mayor's Office","Aug",2,8
+67,"Mayor's Office","Dec",2,12
+68,"Mayor's Office","Nov",1,11
+69,"Mayor's Office","Sep",6,9
+70,"Mobile App","Apr",11532,4
+71,"Mobile App","Aug",16762,8
+72,"Mobile App","Dec",4919,12
+73,"Mobile App","Feb",10357,2
+74,"Mobile App","Jan",9135,1
+75,"Mobile App","Jul",11518,7
+76,"Mobile App","Jun",11708,6
+77,"Mobile App","Mar",10851,3
+78,"Mobile App","May",12017,5
+79,"Mobile App","Nov",12895,11
+80,"Mobile App","Oct",18965,10
+81,"Mobile App","Sep",25353,9
+82,"Queue Initiated Customer Call","Apr",1,4
+83,"Queue Initiated Customer Call","Nov",33,11
+84,"Queue Initiated Customer Call","Oct",63,10
+85,"Queue Initiated Customer Call","Sep",48,9
+86,"Radio","Aug",1,8
+87,"Radio","Jun",1,6
+88,"Radio","May",2,5
+89,"Radio","Oct",1,10
+90,"Radio","Sep",2,9
+91,"Self Service","Apr",8701,4
+92,"Self Service","Aug",12590,8
+93,"Self Service","Dec",553,12
+94,"Self Service","Feb",6400,2
+95,"Self Service","Jan",6113,1
+96,"Self Service","Jul",12624,7
+97,"Self Service","Jun",10397,6
+98,"Self Service","Mar",8044,3
+99,"Self Service","May",10359,5
+100,"Self Service","Nov",7168,11
+101,"Self Service","Oct",11466,10
+102,"Self Service","Sep",11984,9
+103,"TDD/ NexTalk","Mar",1,3
+104,"Twitter","Apr",1,4
+105,"Twitter","Aug",4,8
+106,"Twitter","Feb",1,2
+107,"Twitter","Jan",2,1
+108,"Twitter","Jun",1,6
+109,"Twitter","Mar",6,3
+110,"Twitter","Nov",3,11
+111,"Twitter","Oct",2,10
+112,"Twitter","Sep",5,9
+113,"Voicemail","Apr",55,4
+114,"Voicemail","Aug",210,8
+115,"Voicemail","Dec",104,12
+116,"Voicemail","Feb",54,2
+117,"Voicemail","Jan",119,1
+118,"Voicemail","Jul",60,7
+119,"Voicemail","Jun",54,6
+120,"Voicemail","Mar",46,3
+121,"Voicemail","May",52,5
+122,"Voicemail","Nov",109,11
+123,"Voicemail","Oct",180,10
+124,"Voicemail","Sep",158,9
+125,"Walk-in","Apr",26,4
+126,"Walk-in","Aug",7,8
+127,"Walk-in","Dec",12,12
+128,"Walk-in","Feb",12,2
+129,"Walk-in","Jan",29,1
+130,"Walk-in","Jul",3,7
+131,"Walk-in","Jun",8,6
+132,"Walk-in","Mar",1,3
+133,"Walk-in","May",15,5
+134,"Walk-in","Nov",7,11
+135,"Walk-in","Oct",3,10
+136,"Walk-in","Sep",5,9
+137,"Web Form","Apr",1,4
+138,"Web Form","Aug",23,8
+139,"Web Form","Dec",1,12
+140,"Web Form","Jan",51,1
+141,"Web Form","Jul",4,7
+142,"Web Form","Jun",4,6
+143,"Web Form","Mar",3,3
+144,"Web Form","Oct",83,10
+145,"Web Form","Sep",12,9

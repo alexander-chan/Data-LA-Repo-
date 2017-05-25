@@ -1,0 +1,42 @@
+illegal dump construction material 
+bulky item - sofas, also seasonal near schools (after quarter ends)
+loose litter - litter
+weeds - seasonal , come with rain
+
+How to score individual
+illegal - auto 3
+
+if not, average everything else -> clean stat score for segmenet
+
+Take all dirty segmenets - compsat grid used by lapd
+see relationship between crime and cleanliness
+
+segments -> grids
+count up dirty segmenets (2 or 3 score) within a grid
+
+Normalize by area of grid = Gridscore / (0.61)
+
+Jan to march 2016 - Q1
+
+Gridscore Norm / Highest possible Grid score in Q1 2016, excluded outliers / 3
+
+HPS 85.2454902
+
+How did we find the 
+
+illegal dump > 5, bulky item > 14 -> automatically a 3
+
+-------
+
+Scores
+data - thought was gonna be a 1 time thing
+
+everything on the cleanliness data is 2 days after people call in. Data is only things not called in.
+
+Distributions patterns
+
+-------
+
+Questions:
+
+Why Q2 and Q3 has 1135 obs and Q4 has 40k obs

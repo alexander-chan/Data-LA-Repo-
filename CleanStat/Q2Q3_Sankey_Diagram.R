@@ -20,7 +20,7 @@ transition
 
 ## Network D3
 
-install.packages("networkD3")
+#install.packages("networkD3")
 library(networkD3)
 nodes <- data.frame(c("Q2 #1's", "Q2 #2's", "Q2 #3's", "Q3 #1's", "Q3 #2's", "Q3 #3's"))
 #nodes <- data.frame(c('Q2_1','Q2_2','Q2_3','Q3_1','Q3_2','Q3_3'))

@@ -1,0 +1,85 @@
+"X","RequestType","day","count","daynum"
+1,"Bulky Items","Fri",63687,5
+2,"Bulky Items","Mon",121993,1
+3,"Bulky Items","Sat",27628,6
+4,"Bulky Items","Sun",25130,7
+5,"Bulky Items","Thurs",81693,4
+6,"Bulky Items","Tues",111900,2
+7,"Bulky Items","Wed",104493,3
+8,"Dead Animal Removal","Fri",4901,5
+9,"Dead Animal Removal","Mon",5233,1
+10,"Dead Animal Removal","Sat",3647,6
+11,"Dead Animal Removal","Sun",2803,7
+12,"Dead Animal Removal","Thurs",4864,4
+13,"Dead Animal Removal","Tues",5097,2
+14,"Dead Animal Removal","Wed",4848,3
+15,"Electronic Waste","Fri",6123,5
+16,"Electronic Waste","Mon",12294,1
+17,"Electronic Waste","Sat",2322,6
+18,"Electronic Waste","Sun",2132,7
+19,"Electronic Waste","Thurs",8095,4
+20,"Electronic Waste","Tues",11057,2
+21,"Electronic Waste","Wed",10183,3
+22,"Feedback","Fri",156,5
+23,"Feedback","Mon",132,1
+24,"Feedback","Sat",79,6
+25,"Feedback","Sun",46,7
+26,"Feedback","Thurs",210,4
+27,"Feedback","Tues",179,2
+28,"Feedback","Wed",166,3
+29,"Graffiti Removal","Fri",39636,5
+30,"Graffiti Removal","Mon",44721,1
+31,"Graffiti Removal","Sat",20758,6
+32,"Graffiti Removal","Sun",13024,7
+33,"Graffiti Removal","Thurs",49610,4
+34,"Graffiti Removal","Tues",54798,2
+35,"Graffiti Removal","Wed",53289,3
+36,"Homeless Encampment","Fri",2236,5
+37,"Homeless Encampment","Mon",2560,1
+38,"Homeless Encampment","Sat",971,6
+39,"Homeless Encampment","Sun",865,7
+40,"Homeless Encampment","Thurs",2351,4
+41,"Homeless Encampment","Tues",2633,2
+42,"Homeless Encampment","Wed",2612,3
+43,"Illegal Dumping Pickup","Fri",9123,5
+44,"Illegal Dumping Pickup","Mon",14445,1
+45,"Illegal Dumping Pickup","Sat",3297,6
+46,"Illegal Dumping Pickup","Sun",2288,7
+47,"Illegal Dumping Pickup","Thurs",11111,4
+48,"Illegal Dumping Pickup","Tues",13711,2
+49,"Illegal Dumping Pickup","Wed",12952,3
+50,"Metal/Household Appliances","Fri",8632,5
+51,"Metal/Household Appliances","Mon",16778,1
+52,"Metal/Household Appliances","Sat",3336,6
+53,"Metal/Household Appliances","Sun",3062,7
+54,"Metal/Household Appliances","Thurs",11217,4
+55,"Metal/Household Appliances","Tues",15301,2
+56,"Metal/Household Appliances","Wed",13771,3
+57,"Multiple Streetlight Issue","Fri",732,5
+58,"Multiple Streetlight Issue","Mon",972,1
+59,"Multiple Streetlight Issue","Sat",267,6
+60,"Multiple Streetlight Issue","Sun",234,7
+61,"Multiple Streetlight Issue","Thurs",831,4
+62,"Multiple Streetlight Issue","Tues",1003,2
+63,"Multiple Streetlight Issue","Wed",860,3
+64,"Other","Fri",2165,5
+65,"Other","Mon",2513,1
+66,"Other","Sat",1327,6
+67,"Other","Sun",1261,7
+68,"Other","Thurs",2297,4
+69,"Other","Tues",2362,2
+70,"Other","Wed",2436,3
+71,"Report Water Waste","Fri",236,5
+72,"Report Water Waste","Mon",273,1
+73,"Report Water Waste","Sat",211,6
+74,"Report Water Waste","Sun",145,7
+75,"Report Water Waste","Thurs",244,4
+76,"Report Water Waste","Tues",275,2
+77,"Report Water Waste","Wed",205,3
+78,"Single Streetlight Issue","Fri",2227,5
+79,"Single Streetlight Issue","Mon",3172,1
+80,"Single Streetlight Issue","Sat",538,6
+81,"Single Streetlight Issue","Sun",863,7
+82,"Single Streetlight Issue","Thurs",2561,4
+83,"Single Streetlight Issue","Tues",3269,2
+84,"Single Streetlight Issue","Wed",2784,3

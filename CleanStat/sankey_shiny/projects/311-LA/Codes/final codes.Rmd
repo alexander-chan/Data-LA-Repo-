@@ -1,0 +1,439 @@
+---
+title: "R Code"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. Distribution of Department in Call Center Dataset
+
+```{r}
+callcenter=read.csv("callcenter.csv")
+servicerequest=read.csv("servicerequest.csv")
+library(ggplot2)
+library(dplyr)
+library(lubridate)
+
+call_dep=callcenter %>%
+  group_by(Department.Abbreviation) %>%
+  summarise(count=n())
+ggplot(call_dep,aes(x=reorder(Department.Abbreviation,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Department")+
+  ggtitle("Distribution of Departments in Call Center")+
+  theme_bw()
+
+```
+
+
+2. Distribution of Department in Service Request Dataset
+```{r}
+service_dep=servicerequest %>%
+  filter(Owner != "")%>%
+  group_by(Owner) %>%
+  summarise(count=n())
+
+ggplot(service_dep,aes(x=reorder(Owner,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Department")+
+  ggtitle("Distribution of Department in Service Request")+
+  theme_bw()
+
+```
+
+3. Distribution of Request Source in Service Request Dataset
+```{r}
+service_sor = servicerequest %>%
+  group_by(RequestSource) %>%
+  summarise(count=n())
+ggplot(service_sor,aes(x=reorder(RequestSource,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Request Source")+
+  ggtitle("Distribution of Request Source")+
+  theme_bw()
+
+```
+
+4.Request Source in Each Department
+```{r}
+service= servicerequest %>%
+  filter(Owner!="")
+ggplot(service,aes(x=RequestSource))+
+  geom_bar(fill="lightblue",color="lightblue")+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Department")+
+  ggtitle("Request Source in Each Department")+
+  theme_bw()+
+  facet_wrap(~Owner)
+```
+
+5. Request Source in Each Request Type 
+```{r}
+ggplot(servicerequest,aes(x=RequestType,fill=RequestSource))+
+  geom_bar()+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Request")+
+  ggtitle("Request Source in Each Request")+
+  theme_bw()
+
+```
+
+6. Distribution of Call Resolution
+```{r}
+call_resolu = callcenter%>%
+  filter(Call.Resolution !="N/A") %>%
+  filter(Call.Resolution!="Call Resolution")%>%
+  group_by(Call.Resolution) %>%
+  summarise(count=n())
+
+ggplot(call_resolu,aes(x=reorder(Call.Resolution,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  ylab("Count")+
+  xlab("Call Resolution")+
+  ggtitle("Distribution of Call Resolution")+
+  theme_bw()
+
+```
+
+7. Service Request Density Map
+```{r}
+
+library(ggmap)
+LA = qmap("Los Angeles",zoom = 10)
+LA+ stat_density2d(data=servicerequest,aes(x=Longitude,y=Latitude,
+                                           fill=..level..),
+                   alpha=0.5,geom="polygon")+
+  scale_fill_gradient(low="grey",high="darkred")+
+  ggtitle("Service Request Map")
+
+```
+
+8. Call Center Heatmap
+```{r}
+callcenter$Date=mdy(callcenter$Date)
+callcenter$dow = wday(callcenter$Date,label=T)
+callcenter$Time=hms(callcenter$Time)
+callcenter$hour =hour(callcenter$Time)
+heatmap=callcenter %>%
+  filter(!is.na(dow))%>%
+  group_by(dow,hour) %>%
+  summarise(count=n())
+
+
+ggplot(heatmap,aes(x=dow,y=hour,fill=count))+
+  geom_tile(alpha=0.7)+
+  scale_fill_gradient(low="white",high="darkred")+
+  xlab("Weekday")+
+  ylab("Hour") +
+  ggtitle("Call Center Heatmap")+
+  theme_bw()
+
+```
+
+9. Service Request Map by Weekday
+```{r}
+servicerequest$ServiceDate=mdy_hms(servicerequest$ServiceDate)
+servicerequest$dow = wday(servicerequest$ServiceDate,label=T)
+servicerequest$month = month(servicerequest$ServiceDate,label=T)
+
+dowdata = servicerequest %>%
+  filter(!is.na(dow))
+LA+ stat_density2d(data=dowdata,aes(x=Longitude,y=Latitude,
+                                           fill=..level..),
+                   alpha=0.5,geom="polygon")+
+  scale_fill_gradient(low="grey",high="darkred")+
+  ggtitle("Service Request Map by Weekday")+
+  facet_wrap(~dow)
+```
+
+10. Service Qequest Map by Month
+```{r}
+monthdata = servicerequest %>%
+  filter(!is.na(month))
+  LA+ stat_density2d(data=monthdata,aes(x=Longitude,y=Latitude,
+                                           fill=..level..),
+                   alpha=0.5,geom="polygon")+
+  scale_fill_gradient(low="grey",high="darkred")+
+  ggtitle("Service Request Map by Month")+
+  facet_wrap(~month)
+
+```
+
+11. Change Volume of Reuqest Over Month
+```{r}
+service_month=servicerequest %>%
+  filter(!is.na(month)) %>%
+  group_by(month) %>%
+  summarise(count=n())
+ggplot(service_month,aes(x=month,y=count,group=1))+
+  geom_line(color="lightblue")+
+  xlab("Month")+
+  ylab("Request")+
+  ggtitle("Change Volume of Request Over Month")+
+  theme_bw()+
+  geom_point()
+
+```
+
+12. Change Volume of Request Over Weekday
+```{r}
+service_weekday=servicerequest %>%
+  filter(!is.na(dow)) %>%
+  group_by(dow) %>%
+  summarise(count=n())
+ggplot(service_weekday,aes(x=dow,y=count,group=1))+
+  geom_line(color="lightblue")+
+  xlab("Weekday")+
+  ylab("Request")+
+  ggtitle("Change Volume of Request Over Weekday")+
+  geom_point()+
+  theme_bw()
+```
+
+13. Distribution of Request Type
+```{r}
+service_type=servicerequest%>%
+  group_by(RequestType) %>%
+  summarise(count=n())
+ggplot(service_type,aes(x=reorder(RequestType,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  xlab("RequestType")+
+  ylab("Count")+
+  ggtitle("Distribution of Request Type")+
+  theme_bw()
+```
+
+14. Distribution of Call resolution Type
+```{r}
+callcenter=callcenter %>%
+  mutate(Call.Res.Class=ifelse(Call.Resolution %in% c("Transfer (City)","Warm Transfer (City)","Transferred to 411"), "Transfer",
+                             ifelse(Call.Resolution =="Service Request Processed", "Service Request",
+                                    ifelse(Call.Resolution =="Gave Caller Information", "Gave Info", 
+                                           ifelse(Call.Resolution %in% c("Referred To County", "Referred To State", "Referred To Other Governmental", "Referred To 411"), "Refer", 
+                                                  "Others")))))
+call_resolustion = callcenter%>%
+  group_by(Call.Res.Class)%>%
+  summarise(count=n())
+ggplot(call_resolustion,aes(x=reorder(Call.Res.Class,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  xlab("Call Resolution Type")+
+  ylab("Count")+
+  ggtitle("Distribution of Call Resolution Type")+
+  theme_bw()
+```
+
+15. Call Resolution Type for Each Department
+```{r}
+ggplot(callcenter,aes(x=Department.Abbreviation,fill=Call.Res.Class))+
+  geom_bar()+
+  coord_flip()+
+  xlab("Department.Name")+
+  ylab("Count")+
+  ggtitle("Call Resolution Type for Each Department")+
+  theme_bw()
+```
+
+16. Distribution of Top 15 AssignTo
+```{r}
+service_at=servicerequest %>%
+  filter(AssignTo !="")%>%
+  group_by(AssignTo) %>%
+  summarise(count=n()) %>%
+  arrange(-count)%>%
+  slice(1:15)
+ggplot(service_at,aes(x=reorder(AssignTo,count),y=count))+
+  geom_bar(stat="identity",color="lightblue",fill="lightblue")+
+  coord_flip()+
+  xlab("AssignTo")+
+  ylab("Count")+
+  ggtitle("Distribution of Top 15 AssignTo")
+
+```
+
+17. AssignTo for Each Request Type
+```{r}
+service_ta=servicerequest%>%
+  filter(AssignTo %in% c("NC","EV","SLA","WV","WLA","SLABT",
+                         "HB","GAP","GAPBH","CCAC","WVA",
+                         "HBT","KYCC","LACC",
+                         "NEGB_ELA"))
+ggplot(service_ta,aes(x=AssignTo))+
+  geom_bar(fill="lightblue",color="lightblue")+
+  coord_flip()+
+  facet_wrap(~RequestType)+
+  xlab("AssignTo")+
+  ylab("Count")+
+  ggtitle("AssignTo for Each Reuqest Type")
+```
+
+18. Distribution of APC
+```{r}
+service_apc=servicerequest %>%
+  filter(APC !="") %>%
+  group_by(APC) %>%
+  summarise(count=n())
+ggplot(service_apc,aes(x=reorder(APC,count),y=count))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  xlab("APC")+
+  ylab("Count")+
+  ggtitle("Distribution of APC")+
+  theme_bw()
+
+```
+
+19. Request Type Distribution for Each APC
+```{r}
+servicerequest %>%
+  filter(APC !="") %>%
+  ggplot(aes(x=RequestType))+
+  geom_bar(fill="lightblue",color="lightblue")+
+  coord_flip()+
+  facet_wrap(~APC)+
+  theme_bw()+
+  xlab("Request Type")+
+  ylab("Count")+
+  ggtitle("Request Type Distribution for Each APC")
+
+```
+
+20. Distribution of Average Process Time for Each Request Type
+```{r}
+servicerequest$CreatedDate=mdy_hms(servicerequest$CreatedDate)
+servicerequest$UpdatedDate=mdy_hms(servicerequest$UpdatedDate)
+servicerequest=servicerequest %>%
+  mutate(process_time=(UpdatedDate-CreatedDate)/3600)
+service_time=servicerequest %>%
+  group_by(RequestType) %>%
+  summarise(avgtime=mean(process_time))
+ggplot(service_time,aes(x=reorder(RequestType,avgtime),y=avgtime))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  xlab("Request Type")+
+  ylab("Average Process Time(Hour)")+
+  ggtitle("Distribution of Average Process Time for Each Request Type")+
+  theme_bw()
+
+
+```
+
+21. Service Request VS. Process Time
+```{r}
+ggplot(servicerequest,aes(x=RequestType,y=process_time))+
+  geom_point(position=position_jitter(height=0,width=0.4),alpha=0.5)+
+  xlab("Request Type")+
+  ylab("Process Time")+
+  ggtitle("Request Type VS. Process Time")+
+  coord_flip()+
+  theme_bw()
+```
+
+22. Distribution of Average Process Time for Each Department
+```{r}
+service_time2=servicerequest %>%
+  group_by(Owner) %>%
+  summarise(avgtime=mean(process_time)) %>%
+  arrange(-avgtime)
+
+ggplot(service_time2,aes(x=reorder(Owner,avgtime),y=avgtime))+
+  geom_bar(stat="identity",fill="lightblue",color="lightblue")+
+  coord_flip()+
+  xlab("Department")+
+  ylab("Average Process Time(Hour)")+
+  ggtitle("Distribution of Average Process Time for Each Department")+
+  theme_bw()
+```
+
+23. Request Type for Each Council District
+```{r}
+servicerequest%>%
+  filter(!is.na(CD))%>%
+  ggplot(aes(x=RequestType))+
+  geom_bar(fill="lightblue",color="lightblue")+
+  facet_wrap(~CD)+
+  xlab("Request Type")+
+  ylab("Count")+
+  ggtitle("Request Type for Each Council District")+
+  coord_flip()+
+  theme_bw()
+```
+
+24.Distribution of Requests for Council Districts
+```{r}
+servicerequest %>%
+  filter(!is.na(CD)) %>%
+  ggplot(aes(x=as.factor(CD)))+
+  geom_bar(fill="lightblue",color="lightblue")+
+  xlab("Council Districts")+
+  ylab("Count")+
+  ggtitle("Distribution of Requests for Council Districts")+
+  theme_bw()
+
+```
+
+25. Sankey Diagram: Owner-RequestType
+```{r}
+library(googleVis)
+service_sankey = servicerequest %>%
+  group_by(Owner,RequestType) %>%
+  summarise(count1=n())
+
+plot(gvisSankey(service_sankey,from="Owner",to="RequestType",weight="count1",
+                options=list(height=800, width=850,
+                             sankey="{
+                             link:{color:{fill: 'lightgray', fillOpacity: 0.7}},
+                             node:{nodePadding: 5, label:{fontSize: 12}, interactivity: true, width: 20},
+                             }")
+)
+)
+```
+
+26. Sankey Diagram: RequestType-AssignTo
+```{r}
+service_sankey2 = servicerequest %>%
+  group_by(RequestType,AssignTo) %>%
+  summarise(count2=n())
+
+plot(gvisSankey(service_sankey2,from="RequestType",to="AssignTo",weight="count2",
+                options=list(height=800, width=850,
+                             sankey="{
+                             link:{color:{fill: 'lightgray', fillOpacity: 0.7}},
+                             node:{nodePadding: 5, label:{fontSize: 12}, interactivity: true, width: 20},
+                             }")
+)
+)
+```
+
+27. change volume of request source by weekday
+```{r}
+ggplot(servicerequest,aes(x=dow,color=RequestSource))+
+  geom_line(stat="count",aes(group=RequestSource))+
+  xlab("Weekday")+
+  ylab("Count")+
+  ggtitle("Change Volume of Request Source by Weekday")+
+  theme_bw()
+```
+
+28.Change Volume of Request Source by Month
+```{r}
+ggplot(servicerequest,aes(x=month,color=RequestSource))+
+  geom_line(stat="count",aes(group=RequestSource))+
+  xlab("Month")+
+  ylab("Count")+
+  ggtitle("Change Volume of Request Source by Month")+
+  theme_bw()
+```
+

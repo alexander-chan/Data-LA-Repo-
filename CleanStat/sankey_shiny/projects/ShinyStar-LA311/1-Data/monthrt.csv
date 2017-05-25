@@ -1,0 +1,145 @@
+"X","RequestType","month","count","monnum"
+1,"Bulky Items","Apr",32330,4
+2,"Bulky Items","Aug",73818,8
+3,"Bulky Items","Dec",29015,12
+4,"Bulky Items","Feb",29693,2
+5,"Bulky Items","Jan",27939,1
+6,"Bulky Items","Jul",38477,7
+7,"Bulky Items","Jun",38257,6
+8,"Bulky Items","Mar",33916,3
+9,"Bulky Items","May",35639,5
+10,"Bulky Items","Nov",50234,11
+11,"Bulky Items","Oct",68871,10
+12,"Bulky Items","Sep",78335,9
+13,"Dead Animal Removal","Apr",1973,4
+14,"Dead Animal Removal","Aug",4032,8
+15,"Dead Animal Removal","Dec",1813,12
+16,"Dead Animal Removal","Feb",1725,2
+17,"Dead Animal Removal","Jan",1949,1
+18,"Dead Animal Removal","Jul",2204,7
+19,"Dead Animal Removal","Jun",2381,6
+20,"Dead Animal Removal","Mar",1794,3
+21,"Dead Animal Removal","May",2219,5
+22,"Dead Animal Removal","Nov",2979,11
+23,"Dead Animal Removal","Oct",4113,10
+24,"Dead Animal Removal","Sep",4211,9
+25,"Electronic Waste","Apr",3226,4
+26,"Electronic Waste","Aug",6337,8
+27,"Electronic Waste","Dec",3776,12
+28,"Electronic Waste","Feb",3343,2
+29,"Electronic Waste","Jan",3372,1
+30,"Electronic Waste","Jul",3391,7
+31,"Electronic Waste","Jun",3717,6
+32,"Electronic Waste","Mar",3584,3
+33,"Electronic Waste","May",3566,5
+34,"Electronic Waste","Nov",5259,11
+35,"Electronic Waste","Oct",6025,10
+36,"Electronic Waste","Sep",6610,9
+37,"Feedback","Apr",57,4
+38,"Feedback","Aug",419,8
+39,"Feedback","Dec",12,12
+40,"Feedback","Feb",36,2
+41,"Feedback","Jan",46,1
+42,"Feedback","Jul",44,7
+43,"Feedback","Jun",58,6
+44,"Feedback","Mar",59,3
+45,"Feedback","May",47,5
+46,"Feedback","Nov",51,11
+47,"Feedback","Oct",49,10
+48,"Feedback","Sep",90,9
+49,"Graffiti Removal","Apr",23818,4
+50,"Graffiti Removal","Aug",25035,8
+51,"Graffiti Removal","Dec",14,12
+52,"Graffiti Removal","Feb",24216,2
+53,"Graffiti Removal","Jan",17014,1
+54,"Graffiti Removal","Jul",31779,7
+55,"Graffiti Removal","Jun",26381,6
+56,"Graffiti Removal","Mar",27871,3
+57,"Graffiti Removal","May",27376,5
+58,"Graffiti Removal","Nov",17881,11
+59,"Graffiti Removal","Oct",25052,10
+60,"Graffiti Removal","Sep",29399,9
+61,"Homeless Encampment","Apr",1055,4
+62,"Homeless Encampment","Aug",1767,8
+63,"Homeless Encampment","Dec",273,12
+64,"Homeless Encampment","Feb",443,2
+65,"Homeless Encampment","Jan",451,1
+66,"Homeless Encampment","Jul",1500,7
+67,"Homeless Encampment","Jun",1340,6
+68,"Homeless Encampment","Mar",762,3
+69,"Homeless Encampment","May",1248,5
+70,"Homeless Encampment","Nov",1273,11
+71,"Homeless Encampment","Oct",1935,10
+72,"Homeless Encampment","Sep",2181,9
+73,"Illegal Dumping Pickup","Apr",3810,4
+74,"Illegal Dumping Pickup","Aug",8309,8
+75,"Illegal Dumping Pickup","Dec",3880,12
+76,"Illegal Dumping Pickup","Feb",3899,2
+77,"Illegal Dumping Pickup","Jan",4097,1
+78,"Illegal Dumping Pickup","Jul",4391,7
+79,"Illegal Dumping Pickup","Jun",4314,6
+80,"Illegal Dumping Pickup","Mar",4041,3
+81,"Illegal Dumping Pickup","May",4310,5
+82,"Illegal Dumping Pickup","Nov",6825,11
+83,"Illegal Dumping Pickup","Oct",9097,10
+84,"Illegal Dumping Pickup","Sep",9954,9
+85,"Metal/Household Appliances","Apr",4691,4
+86,"Metal/Household Appliances","Aug",9205,8
+87,"Metal/Household Appliances","Dec",4173,12
+88,"Metal/Household Appliances","Feb",4186,2
+89,"Metal/Household Appliances","Jan",3883,1
+90,"Metal/Household Appliances","Jul",5668,7
+91,"Metal/Household Appliances","Jun",5528,6
+92,"Metal/Household Appliances","Mar",4809,3
+93,"Metal/Household Appliances","May",4806,5
+94,"Metal/Household Appliances","Nov",7064,11
+95,"Metal/Household Appliances","Oct",9094,10
+96,"Metal/Household Appliances","Sep",8990,9
+97,"Multiple Streetlight Issue","Apr",353,4
+98,"Multiple Streetlight Issue","Aug",561,8
+99,"Multiple Streetlight Issue","Dec",354,12
+100,"Multiple Streetlight Issue","Feb",308,2
+101,"Multiple Streetlight Issue","Jan",444,1
+102,"Multiple Streetlight Issue","Jul",272,7
+103,"Multiple Streetlight Issue","Jun",289,6
+104,"Multiple Streetlight Issue","Mar",338,3
+105,"Multiple Streetlight Issue","May",229,5
+106,"Multiple Streetlight Issue","Nov",561,11
+107,"Multiple Streetlight Issue","Oct",604,10
+108,"Multiple Streetlight Issue","Sep",586,9
+109,"Other","Apr",1174,4
+110,"Other","Aug",1554,8
+111,"Other","Dec",19,12
+112,"Other","Feb",1329,2
+113,"Other","Jan",1346,1
+114,"Other","Jul",1403,7
+115,"Other","Jun",1295,6
+116,"Other","Mar",1282,3
+117,"Other","May",1063,5
+118,"Other","Nov",764,11
+119,"Other","Oct",1552,10
+120,"Other","Sep",1580,9
+121,"Report Water Waste","Apr",131,4
+122,"Report Water Waste","Aug",165,8
+123,"Report Water Waste","Dec",18,12
+124,"Report Water Waste","Feb",107,2
+125,"Report Water Waste","Jan",37,1
+126,"Report Water Waste","Jul",158,7
+127,"Report Water Waste","Jun",212,6
+128,"Report Water Waste","Mar",116,3
+129,"Report Water Waste","May",169,5
+130,"Report Water Waste","Nov",97,11
+131,"Report Water Waste","Oct",185,10
+132,"Report Water Waste","Sep",194,9
+133,"Single Streetlight Issue","Apr",1104,4
+134,"Single Streetlight Issue","Aug",1694,8
+135,"Single Streetlight Issue","Dec",1275,12
+136,"Single Streetlight Issue","Feb",1200,2
+137,"Single Streetlight Issue","Jan",1082,1
+138,"Single Streetlight Issue","Jul",759,7
+139,"Single Streetlight Issue","Jun",767,6
+140,"Single Streetlight Issue","Mar",1006,3
+141,"Single Streetlight Issue","May",776,5
+142,"Single Streetlight Issue","Nov",2008,11
+143,"Single Streetlight Issue","Oct",2005,10
+144,"Single Streetlight Issue","Sep",1738,9

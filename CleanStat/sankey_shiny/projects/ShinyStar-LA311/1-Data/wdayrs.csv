@@ -1,0 +1,98 @@
+"X","RequestSource","day","count","daynum"
+1,"Call","Fri",78024,5
+2,"Call","Mon",145741,1
+3,"Call","Sat",28999,6
+4,"Call","Sun",22630,7
+5,"Call","Thurs",97991,4
+6,"Call","Tues",131817,2
+7,"Call","Wed",122256,3
+8,"City Attorney","Wed",1,3
+9,"Council's Office","Fri",253,5
+10,"Council's Office","Mon",241,1
+11,"Council's Office","Sat",7,6
+12,"Council's Office","Thurs",333,4
+13,"Council's Office","Tues",211,2
+14,"Council's Office","Wed",212,3
+15,"Driver Self Report","Fri",24393,5
+16,"Driver Self Report","Mon",24064,1
+17,"Driver Self Report","Sat",7852,6
+18,"Driver Self Report","Sun",626,7
+19,"Driver Self Report","Thurs",32607,4
+20,"Driver Self Report","Tues",34764,2
+21,"Driver Self Report","Wed",33849,3
+22,"Email","Fri",4394,5
+23,"Email","Mon",6085,1
+24,"Email","Sat",3066,6
+25,"Email","Sun",3251,7
+26,"Email","Thurs",5249,4
+27,"Email","Tues",6551,2
+28,"Email","Wed",6648,3
+29,"Fax","Fri",18,5
+30,"Fax","Mon",13,1
+31,"Fax","Sat",31,6
+32,"Fax","Sun",56,7
+33,"Fax","Thurs",44,4
+34,"Fax","Tues",27,2
+35,"Fax","Wed",10,3
+36,"Letter","Fri",4,5
+37,"Letter","Mon",4,1
+38,"Letter","Thurs",3,4
+39,"Letter","Tues",1,2
+40,"Letter","Wed",5,3
+41,"Mayor's Office","Fri",2,5
+42,"Mayor's Office","Sat",1,6
+43,"Mayor's Office","Thurs",1,4
+44,"Mayor's Office","Tues",4,2
+45,"Mayor's Office","Wed",3,3
+46,"Mobile App","Fri",20440,5
+47,"Mobile App","Mon",28295,1
+48,"Mobile App","Sat",16037,6
+49,"Mobile App","Sun",14469,7
+50,"Mobile App","Thurs",23057,4
+51,"Mobile App","Tues",27924,2
+52,"Mobile App","Wed",25790,3
+53,"Queue Initiated Customer Call","Fri",1,5
+54,"Queue Initiated Customer Call","Mon",39,1
+55,"Queue Initiated Customer Call","Sun",1,7
+56,"Queue Initiated Customer Call","Thurs",29,4
+57,"Queue Initiated Customer Call","Tues",42,2
+58,"Queue Initiated Customer Call","Wed",33,3
+59,"Radio","Fri",1,5
+60,"Radio","Mon",2,1
+61,"Radio","Thurs",1,4
+62,"Radio","Tues",3,2
+63,"Self Service","Fri",12093,5
+64,"Self Service","Mon",20390,1
+65,"Self Service","Sat",8221,6
+66,"Self Service","Sun",10700,7
+67,"Self Service","Thurs",15478,4
+68,"Self Service","Tues",19983,2
+69,"Self Service","Wed",19534,3
+70,"TDD/ NexTalk","Thurs",1,4
+71,"Twitter","Fri",3,5
+72,"Twitter","Mon",5,1
+73,"Twitter","Sat",1,6
+74,"Twitter","Sun",4,7
+75,"Twitter","Thurs",5,4
+76,"Twitter","Tues",3,2
+77,"Twitter","Wed",4,3
+78,"Voicemail","Fri",176,5
+79,"Voicemail","Mon",135,1
+80,"Voicemail","Sat",164,6
+81,"Voicemail","Sun",115,7
+82,"Voicemail","Thurs",213,4
+83,"Voicemail","Tues",187,2
+84,"Voicemail","Wed",211,3
+85,"Walk-in","Fri",20,5
+86,"Walk-in","Mon",34,1
+87,"Walk-in","Sat",1,6
+88,"Walk-in","Thurs",26,4
+89,"Walk-in","Tues",17,2
+90,"Walk-in","Wed",30,3
+91,"Web Form","Fri",32,5
+92,"Web Form","Mon",38,1
+93,"Web Form","Sat",1,6
+94,"Web Form","Sun",1,7
+95,"Web Form","Thurs",46,4
+96,"Web Form","Tues",51,2
+97,"Web Form","Wed",13,3

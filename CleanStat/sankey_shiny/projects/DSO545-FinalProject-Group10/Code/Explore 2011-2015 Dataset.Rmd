@@ -1,0 +1,185 @@
+---
+title: "Explore 2011-2015 Dataset"
+output: html_document
+date: "11/26/2016"
+---
+**Load Add-on packages**
+```{r message = FALSE}
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+```
+
+**Data Preparation**
+
+Import Data and transfer time-related variables to date/time objects with lubridate package
+
+```{r}
+LA311Call_1415 = read.csv("311_Call_Center_Tracking_Data.csv")
+LA311Call_1415$Date = mdy(LA311Call_1415$Date) 
+LA311Call_1415$Time = hms(LA311Call_1415$Time)
+```
+
+Add two variables DoW and Hour indicating the day of week and hour of the request respectively.
+```{r}
+LA311Call_1415$Month=month(LA311Call_1415$Date,label=TRUE)
+LA311Call_1415$DoW = wday(LA311Call_1415$Date, label = TRUE)
+LA311Call_1415$Hour = hour(LA311Call_1415$Time)
+```
+
+**Visualization of Peak Season / Month / Hour**
+
+Heatmap over month and hour
+```{r}
+heatmap_data_1 = LA311Call_1415 %>%
+  filter(Month != "NA") %>%
+  group_by(Month,Hour) %>%
+  summarise(Count = n())
+
+ggplot(heatmap_data_1,aes(x = Month,y = factor(Hour),fill = Count))+
+  geom_tile()+
+  scale_fill_gradient(low = "white",high = "darkred")+
+  theme_minimal()+
+  ylab("Hour")+
+  ggtitle("Heatmap of 311 Requests in Los Angeles")
+```
+
+Heatmap over day of week and hour
+```{r}
+heatmap_data_2 = LA311Call_1415 %>%
+  filter(!is.na(DoW))%>%
+  group_by(DoW, Hour)%>%
+  summarise(count = n())
+
+ggplot(heatmap_data_2, aes(x = DoW, y = factor(Hour), fill = count)) + 
+  geom_tile()+
+  scale_fill_gradient(low = "white", high = "darkred") + xlab("Day of Week") + ylab("Hour") +
+  theme_minimal() +
+  ggtitle("Heatmap of 311 Requests in Los Angeles")
+```
+
+**Percentage of Requests Handled vs Referred**
+
+Add a new variable to indicate wheather the request was handled or referred to other department
+```{r}
+LA311Call_1415 = 
+    transform(
+        LA311Call_1415,
+        Resolution =
+            ifelse(Call.Resolution %in% c("Referred To 411",
+                                           "Referred To County",
+                                           "Referred To Other Governmental",
+                                           "Referred To State",
+                                           "Transfer (City)",
+                                           "Transferred To 411",
+                                           "Warm Transfer (City)",
+                                           "Got Voicemail (City)"), 
+                   'Referred',
+                   ifelse(Call.Resolution %in% c("Call Resolution",
+                                          "Escalate To Supervisor",
+                                          "Escalated To Office of Finance",
+                                          "Gave Caller Information",
+                                          "Service Request Processed"),
+                          'Handled',
+                          'NA')))
+unique(LA311Call_1415$Department.Abbreviation)
+```
+
+Create a pie chart to display the percentage of handled request and referred request
+```{r}
+Resolution = LA311Call_1415 %>%
+  filter(Resolution != "NA") %>%
+  group_by(Resolution)%>%
+  summarise(Count=n()) %>%
+  mutate(Percent=Count*100/sum(Count))
+
+ggplot(Resolution,aes(x = factor(1), y = Percent,fill = Resolution)) +
+  geom_bar(stat = "identity", width = 1)+
+  ylab("Percentage of Total")+
+  ggtitle("Percentage of Handled vs. Referred")+
+  theme_minimal() +
+  coord_polar(theta = "y") +
+  scale_fill_manual(values = c("lightblue", "pink")) +
+  xlab("") +
+  ylab("")
+```
+
+**Performance of Different Departments**
+
+Top 10 departments with highest referred rate
+```{r}
+Department_Resolution = LA311Call_1415 %>%
+  filter(!is.na(Resolution) & (Department.Abbreviation != ""))%>%
+  group_by(Department.Abbreviation) %>%
+  summarise(Referred_Percent = sum(Resolution == "Referred")/n(), 
+            Handled_Percent = sum(Resolution == "Handled")/n())
+
+Department_Resolution_Highest = subset(Department_Resolution, rank(Referred_Percent) > 51)
+
+ggplot(Department_Resolution_Highest, 
+       aes(x = reorder(Department.Abbreviation, -Referred_Percent), 
+           y = Referred_Percent * 100)) + 
+  geom_bar(stat = "identity", fill = "lightblue") +
+  xlab("Department") +
+  ylab("Percentage of Referred Request (%)") +
+  ggtitle("Top 10 Departments with Highest Referred Rate") +
+  theme_minimal() +
+  coord_flip()
+```
+
+Top 10 departments with lowest referred rate
+```{r}
+Department_Resolution_Lowest = subset(Department_Resolution, rank(Referred_Percent) < 11)
+
+ggplot(Department_Resolution_Lowest, 
+       aes(x = reorder(Department.Abbreviation, -Referred_Percent), 
+           y = Referred_Percent * 100)) + 
+  geom_bar(stat = "identity", fill = "lightblue") +
+  xlab("Department") +
+  ylab("Percentage of Referred Request (%)") +
+  ggtitle("Top 10 Departments with Lowest Referred Rate") +
+  theme_minimal() +
+  coord_flip()
+```
+
+Top 10 departments receiving most requests
+```{r}
+Department_Count = LA311Call_1415 %>%
+  group_by(Department.Abbreviation) %>%
+  summarise(Count = n()) %>%
+  filter(Department.Abbreviation != "") %>%
+  filter(rank(Count) > 51)
+
+ggplot(Department_Count, aes(x = Count, 
+                             y = reorder(Department.Abbreviation,Count))) +
+  geom_point(size = 2) +
+  xlab("Number of Requests Received") +
+  ylab("Department") +
+  ggtitle("Top 10 Departments Receiving Most Requests") +
+  theme_minimal()
+```
+
+**Geographic Visualization**
+
+Distribution of requests displayed on map
+```{r}
+zipcode=read.csv("zipcode.csv")
+
+map_data = merge(LA311Call_1415, 
+                 zipcode,
+                 by.x = "Zip.Code",
+                 by.y = "ZIP",
+                 all.x = TRUE)
+
+map_data_filtered = filter(map_data, !is.na(LNG) | !is.na(LAT) )
+
+library(ggmap)
+LA = qmap("Los Angeles", zoom = 11, maptype = "roadmap", legend = "topleft")
+
+LA+
+  stat_density2d(data = map_data_filtered,              
+                 aes(x = LNG ,y = LAT, fill=..level..),  
+                 geom = "polygon") +
+  scale_fill_gradient(low = "gray", high = "darkred")
+```
+

@@ -6,16 +6,7 @@ library(stringr)
 library(lubridate)
 library(plotly)
 library(leaflet)
-
-source("R/load_data.R")
-source("R/subsets.R")
-source("R/load_shapefile.R")
-source("R/value_counts.R")
-
-# JS function ------------------------------------------------------------------ 
-#scroll <- "
-#shinyjs.scroll = function() { 
-#$('body').animate({ scrollTop: 0 }, 'slow'); } "
+library(googleVis)
 
 # Colors ----------------------------------------------------------------------- 
 pal <- RColorBrewer::brewer.pal(11, "Spectral")
@@ -41,7 +32,7 @@ warm_gradient <- data_frame(
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
   title = tags$a(href = "",
-                 tags$img(src = "www/seal_of_los_angeles.png", height = "45", width = "40",
+                 tags$img(src = "C:/Users/Alex/Data-LA-Repo-/CleanStat/sankey_shiny/www/seal_of_los_angeles.png", height = "45", width = "40",
                           style = "display: block; padding-top: 5px;"))
 )
 
@@ -58,6 +49,7 @@ body <- dashboardBody(
   includeCSS("www/custom.css"),
   
   mainPanel(
+    
     htmlOutput("view")
   )
 ) # body

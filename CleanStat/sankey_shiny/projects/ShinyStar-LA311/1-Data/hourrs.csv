@@ -1,0 +1,223 @@
+"","hour","RequestSource","count"
+"1",0,"Call",333
+"2",0,"Driver Self Report",444
+"3",0,"Email",854
+"4",0,"Fax",1
+"5",0,"Mobile App",1044
+"6",0,"Self Service",1026
+"7",1,"Call",125
+"8",1,"Driver Self Report",483
+"9",1,"Email",1010
+"10",1,"Mobile App",656
+"11",1,"Self Service",464
+"12",2,"Call",119
+"13",2,"Driver Self Report",484
+"14",2,"Email",979
+"15",2,"Mobile App",682
+"16",2,"Self Service",258
+"17",3,"Call",142
+"18",3,"Driver Self Report",340
+"19",3,"Email",772
+"20",3,"Mobile App",722
+"21",3,"Self Service",175
+"22",4,"Call",97
+"23",4,"Driver Self Report",172
+"24",4,"Email",584
+"25",4,"Mobile App",597
+"26",4,"Self Service",263
+"27",5,"Call",318
+"28",5,"Council's Office",8
+"29",5,"Driver Self Report",17
+"30",5,"Email",723
+"31",5,"Mobile App",791
+"32",5,"Self Service",795
+"33",5,"Walk-in",2
+"34",6,"Call",2002
+"35",6,"Council's Office",27
+"36",6,"Driver Self Report",151
+"37",6,"Email",435
+"38",6,"Mobile App",2654
+"39",6,"Self Service",1713
+"40",6,"Walk-in",4
+"41",6,"Web Form",1
+"42",7,"Call",14696
+"43",7,"Council's Office",71
+"44",7,"Driver Self Report",3552
+"45",7,"Email",729
+"46",7,"Fax",3
+"47",7,"Mobile App",6374
+"48",7,"Self Service",3304
+"49",7,"Voicemail",1
+"50",7,"Walk-in",3
+"51",7,"Web Form",3
+"52",8,"Call",57751
+"53",8,"Council's Office",133
+"54",8,"Driver Self Report",11729
+"55",8,"Email",2203
+"56",8,"Fax",24
+"57",8,"Mayor's Office",1
+"58",8,"Mobile App",9274
+"59",8,"Queue Initiated Customer Call",13
+"60",8,"Self Service",5885
+"61",8,"Twitter",2
+"62",8,"Voicemail",200
+"63",8,"Walk-in",6
+"64",8,"Web Form",1
+"65",9,"Call",71011
+"66",9,"Council's Office",108
+"67",9,"Driver Self Report",19405
+"68",9,"Email",3534
+"69",9,"Fax",12
+"70",9,"Letter",4
+"71",9,"Mobile App",14414
+"72",9,"Queue Initiated Customer Call",20
+"73",9,"Self Service",7143
+"74",9,"Twitter",2
+"75",9,"Voicemail",211
+"76",9,"Walk-in",16
+"77",9,"Web Form",12
+"78",10,"Call",72223
+"79",10,"Council's Office",130
+"80",10,"Driver Self Report",22438
+"81",10,"Email",4057
+"82",10,"Fax",39
+"83",10,"Mayor's Office",2
+"84",10,"Mobile App",15845
+"85",10,"Queue Initiated Customer Call",6
+"86",10,"Radio",2
+"87",10,"Self Service",7946
+"88",10,"Twitter",2
+"89",10,"Voicemail",253
+"90",10,"Walk-in",19
+"91",10,"Web Form",23
+"92",11,"Call",68792
+"93",11,"City Attorney",1
+"94",11,"Council's Office",131
+"95",11,"Driver Self Report",21690
+"96",11,"Email",3745
+"97",11,"Fax",14
+"98",11,"Letter",2
+"99",11,"Mayor's Office",2
+"100",11,"Mobile App",13984
+"101",11,"Queue Initiated Customer Call",13
+"102",11,"Radio",2
+"103",11,"Self Service",8146
+"104",11,"Twitter",1
+"105",11,"Voicemail",204
+"106",11,"Walk-in",10
+"107",11,"Web Form",22
+"108",12,"Call",64428
+"109",12,"Council's Office",86
+"110",12,"Driver Self Report",17749
+"111",12,"Email",3057
+"112",12,"Fax",18
+"113",12,"Letter",2
+"114",12,"Mobile App",14337
+"115",12,"Queue Initiated Customer Call",12
+"116",12,"Radio",1
+"117",12,"Self Service",8011
+"118",12,"Twitter",3
+"119",12,"Voicemail",141
+"120",12,"Walk-in",12
+"121",12,"Web Form",16
+"122",13,"Call",60397
+"123",13,"Council's Office",124
+"124",13,"Driver Self Report",18311
+"125",13,"Email",2737
+"126",13,"Fax",14
+"127",13,"Mayor's Office",2
+"128",13,"Mobile App",11503
+"129",13,"Queue Initiated Customer Call",17
+"130",13,"Radio",1
+"131",13,"Self Service",7749
+"132",13,"Twitter",3
+"133",13,"Voicemail",98
+"134",13,"Walk-in",12
+"135",13,"Web Form",8
+"136",14,"Call",59194
+"137",14,"Council's Office",154
+"138",14,"Driver Self Report",19639
+"139",14,"Email",2740
+"140",14,"Fax",40
+"141",14,"Letter",1
+"142",14,"Mayor's Office",1
+"143",14,"Mobile App",9789
+"144",14,"Queue Initiated Customer Call",31
+"145",14,"Self Service",8213
+"146",14,"Twitter",2
+"147",14,"Voicemail",70
+"148",14,"Walk-in",22
+"149",14,"Web Form",44
+"150",15,"Call",64913
+"151",15,"Council's Office",144
+"152",15,"Driver Self Report",9373
+"153",15,"Email",3158
+"154",15,"Fax",4
+"155",15,"Letter",5
+"156",15,"Mayor's Office",3
+"157",15,"Mobile App",11579
+"158",15,"Queue Initiated Customer Call",17
+"159",15,"Radio",1
+"160",15,"Self Service",7932
+"161",15,"TDD/ NexTalk",1
+"162",15,"Twitter",6
+"163",15,"Voicemail",16
+"164",15,"Walk-in",10
+"165",15,"Web Form",19
+"166",16,"Call",52059
+"167",16,"Council's Office",100
+"168",16,"Driver Self Report",4839
+"169",16,"Email",1345
+"170",16,"Fax",30
+"171",16,"Letter",3
+"172",16,"Mobile App",7302
+"173",16,"Queue Initiated Customer Call",7
+"174",16,"Self Service",8036
+"175",16,"Twitter",2
+"176",16,"Voicemail",6
+"177",16,"Walk-in",10
+"178",16,"Web Form",2
+"179",17,"Call",17595
+"180",17,"Council's Office",29
+"181",17,"Driver Self Report",2898
+"182",17,"Email",802
+"183",17,"Mobile App",7602
+"184",17,"Queue Initiated Customer Call",9
+"185",17,"Self Service",6333
+"186",17,"Walk-in",1
+"187",18,"Call",8415
+"188",18,"Council's Office",10
+"189",18,"Driver Self Report",855
+"190",18,"Email",742
+"191",18,"Mobile App",6686
+"192",18,"Self Service",4835
+"193",18,"Voicemail",1
+"194",18,"Web Form",31
+"195",19,"Call",6068
+"196",19,"Council's Office",2
+"197",19,"Driver Self Report",818
+"198",19,"Email",564
+"199",19,"Mobile App",6564
+"200",19,"Self Service",3900
+"201",19,"Twitter",2
+"202",20,"Call",2908
+"203",20,"Driver Self Report",951
+"204",20,"Email",25
+"205",20,"Mobile App",4896
+"206",20,"Self Service",3539
+"207",20,"Walk-in",1
+"208",21,"Call",1711
+"209",21,"Driver Self Report",247
+"210",21,"Email",36
+"211",21,"Mobile App",3773
+"212",21,"Self Service",3408
+"213",22,"Call",1273
+"214",22,"Driver Self Report",788
+"215",22,"Email",127
+"216",22,"Mobile App",3043
+"217",22,"Self Service",4372
+"218",23,"Call",888
+"219",23,"Driver Self Report",782
+"220",23,"Email",286
+"221",23,"Mobile App",1901
+"222",23,"Self Service",2953

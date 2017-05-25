@@ -1,0 +1,219 @@
+---
+title: "Explore 2015-2016 Dataset"
+output: html_document
+date: "11/26/2016"
+---
+
+**Load Add-on packages**
+```{r message = FALSE}
+library(lubridate)
+library(ggplot2)
+library(dplyr)
+```
+
+**Data Preparation**
+
+Import Data and transfer time-related variables to date/time objects with lubridate package
+```{r}
+LA311Call_1516 = read.csv("MyLA311_Service_Request_Data_2016.csv")
+
+LA311Call_1516$CreatedDate = mdy_hms(LA311Call_1516$CreatedDate)
+LA311Call_1516$UpdatedDate = mdy_hms(LA311Call_1516$UpdatedDate)
+
+LA311Call_1516$Year = year(LA311Call_1516$CreatedDate) 
+LA311Call_1516$Month = month(LA311Call_1516$CreatedDate, label = TRUE)
+LA311Call_1516$DoW = wday(LA311Call_1516$CreatedDate, label = TRUE)
+LA311Call_1516$Hour = hour(LA311Call_1516$CreatedDate)
+```
+
+**Request Type Breakdown**
+
+General distribution of request type
+```{r}
+Request_Type = LA311Call_1516 %>%
+  group_by(RequestType) %>%
+  summarise(Count = n())
+
+ggplot(Request_Type, aes(x = reorder(RequestType, Count), y = Count)) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "NA") +
+  xlab("Request Type") +
+  ylab("Count") +
+  scale_y_continuous(breaks = seq(0, 600000, 100000)) +
+  coord_flip() +
+  ggtitle("Distribution of Request Type") +
+  theme_minimal()
+```
+
+Distribution of request type categorized by request source
+```{r}
+Request_Source = LA311Call_1516 %>%
+  filter(RequestSource %in% c("Call","Mobile App")) %>%
+  filter(!is.na(RequestType))
+
+Request_Source$RequestType = factor(Request_Source$RequestType, level = c("Feedback", "Report Water Waste", "Multiple Streetlight Issue", "Homeless Encampment", "Other", "Single Streetlight Issue", "Dead Animal Removal", "Electronic Waste", "Illegal Dumping Pickup", "Metal/Household Appliances", "Graffiti Removal", "Bulky Items"))
+
+ggplot(Request_Source, aes(x = RequestType, fill = RequestSource)) +
+  geom_bar(position = "dodge", width = 0.8) +
+  scale_fill_manual(values = c("lightblue", "pink")) +
+  xlab("Request Type") +
+  ylab("") +
+  ggtitle("Distribution of Request Type Categorized by Request Source") +
+  theme_minimal() +
+  coord_flip() 
+```
+
+Percentage of requests by hour and request type
+```{r}
+TypebyHour = LA311Call_1516 %>% 
+  filter(!is.na(ServiceDate)) %>% 
+  group_by(Hour, RequestType) %>%
+  summarise(NumberofCalls = n())
+  
+TypebyHour = TypebyHour %>%
+  group_by(Hour) %>%
+  mutate(Percentage = NumberofCalls/sum(NumberofCalls) * 100)
+
+ggplot(TypebyHour, aes(x = factor(Hour), y = Percentage, fill = RequestType, group = RequestType)) +
+  geom_area() +
+  geom_line(position = "stack", size = 0.1) +
+  xlab("Hour") +
+  theme_minimal() +
+  guides(fill = guide_legend(reverse = T))
+```
+
+Percentage of requests by day of week and request type
+```{r}
+TypebyWeekday = LA311Call_1516 %>% 
+  filter(!is.na(ServiceDate)) %>%
+  group_by(DoW, RequestType) %>%
+  summarise(NumberofCalls = n())
+  
+TypebyWeekday = TypebyWeekday %>%
+  group_by(DoW) %>%
+  mutate(Percentage = NumberofCalls/sum(NumberofCalls) * 100)
+
+ggplot(TypebyWeekday, aes(x = DoW, y = Percentage, fill = RequestType, group = RequestType)) +
+  geom_area() +
+  geom_line(position = "stack", size = 0.1) +
+  theme(legend.position = "none") +
+  xlab("Day of Week") +
+  ylab("Percentage(%)") +
+  theme_minimal() +
+  guides(fill = guide_legend(reverse = T))
+```
+
+Percentage of requests by month and request type
+```{r}
+TypebyMonth = LA311Call_1516 %>%
+  group_by(Month, RequestType) %>%
+  summarise(NumberofCalls = n())
+  
+TypebyMonth = TypebyMonth %>%
+  group_by(Month) %>%
+  mutate(Percentage = NumberofCalls/sum(NumberofCalls) * 100)
+
+ggplot(TypebyMonth, aes(x = Month, y = Percentage, fill = RequestType, group = RequestType)) +
+  geom_area() +
+  geom_line(position = "stack", size = 0.1) +
+  ylab("Percentage (%)") +
+  theme_minimal() +
+  guides(fill = guide_legend(reverse = T))
+```
+
+**Volume Breakdown**
+
+Change volume of requests over time
+```{r}
+Request_Volume = LA311Call_1516 %>% 
+  group_by(Year, Month) %>% 
+  summarise(Count=n()) 
+
+ggplot(Request_Volume, aes(x = Month, y = Count)) + 
+  geom_bar(stat = "identity", fill = "lightblue") +
+  geom_line(color = "pink", group = 1) +
+  geom_point(color = "red") +
+  facet_wrap(~Year, nrow=1) + 
+  ggtitle("Change Volume of Requests over Time") + 
+  xlab("Month") + 
+  ylab("Number of Requests") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 7, angle = 30, hjust = 1))
+```
+
+Change volume of requests by mobile App over time
+```{r}
+RequestSource_Volume = LA311Call_1516 %>% 
+  filter(RequestSource == "Mobile App") %>%
+  group_by(Year, Month) %>% 
+  summarise(Count=n()) 
+
+ggplot(RequestSource_Volume, aes(x = Month, y = Count)) + 
+  geom_bar(stat = "identity", fill = "lightblue") +
+  geom_line(color = "pink", group = 1) +
+  geom_point(color = "red") +
+  facet_wrap(~Year, nrow=1) + 
+  ggtitle("Change Volume of Requests by Mobile App over Time") + 
+  xlab("Month") + 
+  ylab("Number of Requests") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 7, angle = 30, hjust = 1))
+```
+
+Change volume of requests by call over time
+```{r}
+RequestSource_Volume = LA311Call_1516 %>% 
+  filter(RequestSource == "Call") %>%
+  group_by(Year, Month) %>% 
+  summarise(Count=n()) 
+
+ggplot(RequestSource_Volume, aes(x = Month, y = Count)) + 
+  geom_bar(stat = "identity", fill = "lightblue") +
+  geom_line(color = "pink", group = 1) +
+  geom_point(color = "red") +
+  facet_wrap(~Year, nrow=1) + 
+  ggtitle("Change Volume of Requests by Call over Time") + 
+  xlab("Month") + 
+  ylab("Number of Requests") + 
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 7, angle = 30, hjust = 1))
+```
+
+Change volume of requests from Android and iOS over time
+```{r}
+Mobile_OS = LA311Call_1516 %>%
+  filter(MobileOS == "iOS" | MobileOS == "Android") %>%
+  group_by(Year, Month, MobileOS) %>%
+  summarise(Count=n())
+
+ggplot(Mobile_OS, aes(x = Month,y = Count, fill = MobileOS)) + 
+  geom_bar(stat = "identity") +
+  facet_wrap(~Year, nrow=1) +
+  xlab("Month") + 
+  ylab("Number of Requests") +
+  scale_fill_manual(values = c("lightblue", "pink")) +
+  ggtitle("Android vs. iOS Overtime") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(size = 7, angle = 30, hjust = 1))
+```
+
+**Efficiency Analysis**
+
+Distribution of average process time
+```{r}
+ProcessTime = LA311Call_1516 %>%
+  mutate(ProcessTime = as.numeric(UpdatedDate - CreatedDate)/60/60/24) %>%
+  filter(ProcessTime > 0) %>%
+  group_by(RequestType, PolicePrecinct) %>%
+  summarise(ProcessTime_Avg = round(mean(ProcessTime), 1))
+
+ggplot(ProcessTime, aes(y = PolicePrecinct, x = RequestType, fill = ProcessTime_Avg)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "darkred") +
+  ggtitle("Distribution of Average Process Time") +
+  theme(axis.title = element_text(angle=0, colour="darkred", size=14),
+        plot.title = element_text(colour="darkred", size=18, face="bold"),
+        legend.title=element_text(colour="darkred", size=10),
+        axis.text.x = element_text(angle=25, hjust=1, vjust=1)) +
+  labs(fill = "ProcessTime\n(days)")
+```
+

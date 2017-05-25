@@ -1,0 +1,125 @@
+
+myLA311 = read.csv("MyLA311_Service_Request_Data_2016.csv")
+
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+
+## Filter data with only Mobile App Requests
+data = filter(myLA311, MobileOS != "")
+
+## Check Mobile requests bw Sep 15 and Sep 16
+
+data$CreatedDate = mdy_hms(data$CreatedDate)
+
+MobileYear = filter(data, CreatedDate >= "2015-09-01 00:00:00" & CreatedDate < "2016-08-31 00:00:00")
+
+ggplot(MobileYear, aes(x = CreatedDate, fill = MobileOS)) + 
+  geom_density( alpha = 0.4, color = NA) + 
+  geom_line(stat = "density", size = 0.5) +
+  ggtitle("Mobile Requests Created From September 2015 to September 2016") +
+  xlab("Date") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank())
+
+# Seems like iOS was not existing before Jan 2016.
+
+## Check most common requests
+Reqs = data %>%
+  group_by(RequestType, MobileOS) %>%
+  summarise(count = n()) %>%
+  mutate(pct=100*count/sum(count))
+
+
+ggplot(Reqs, aes(x = reorder(RequestType, -count), y = count, fill = MobileOS)) +
+  geom_bar(stat = "identity", position = position_dodge()) +
+  coord_flip() +
+  ggtitle("Most Comon Requests by Mobile OS") +
+  xlab("Total Requests") +
+  ylab("Request Type")
+  
+# Most requested: Bulky Items (Android), Graffiti Removal (iOS), Illegal Dumping Pickup (Android), 
+# Other (iOS)
+
+
+### Check requests by day and time
+
+data$dow = wday(data$CreatedDate, label = T)
+
+heat = data %>%
+  group_by(dow, crHr, MobileOS) %>%
+  summarise(count = n())
+
+ggplot(heat, aes(x = dow, y = factor(crHr), fill = count)) +
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "darkred") +
+  ggtitle("Distribution of Requests by Day and Time") +
+  xlab("Day of Week") +
+  ylab("Hour of Day") +
+  facet_grid(~MobileOS)
+
+# Most requests with Android, Monday is a very busy day. Most calls bw 8AM and 3pm. 
+# iOS calls go through 9 PM, Barely and calls from midnight to 6 AM.
+
+### Filter night calls
+
+data$crHr = hour(data$CreatedDate)
+night = filter(data, crHr >=0 & crHr<6)
+
+
+night = night %>%
+  filter(crHr >=0 & crHr<6) %>%
+  group_by(RequestType, crHr, MobileOS) %>%
+  summarise(count = n())
+
+ggplot(night, aes(x = crHr, y = RequestType, fill = count)) + 
+  geom_tile() + 
+  scale_fill_gradient(low = "white", high = "darkred")+
+  facet_grid(~MobileOS) +
+  ggtitle("Common Requests Made Between Midnight and 6 AM") +
+  ylab("Request Type") +
+  xlab("Hour Created")
+
+# Most common request at night - Bulky Items followed by Graffiti Removal. 
+# More requests made from Android at night.
+
+
+
+## Check Request Source
+
+reqSource = data %>%
+  group_by(MobileOS, RequestSource) %>%
+  summarise(count = n()) %>%
+  mutate(pct=100*count/sum(count))
+
+# 99.9% of requests are made via the mobile app. The other sources are not enough to explore
+
+
+
+
+### Mobile Map of LA
+
+library(ggmap)
+
+LA = "Los Angeles"
+laMap = qmap(LA, color = "bw")
+
+laMap +
+  geom_point(data = data,
+             aes(Longitude, Latitude, color = MobileOS),
+             size = 1, alpha = 0.1) +
+  ggtitle("Mobile Request Usage Accross LA")
+
+
+# iOS seems to be used more on the map (which is weid because in the graphs it looks like the other
+# way around). Mobile use failry spread. Concentration in Center LA area, SM, and Vally.
+
+laMap +
+  stat_density2d(data = data,
+                 aes(Longitude, Latitude, fill = ..level..),
+                 geom = "polygon", alpha = 0.7) +
+  scale_fill_gradient(low = "white", high = "darkred") +
+  facet_wrap(MobileOS~dow, nrow = 2) +
+  ggtitle("Daily Usage of Mobile OS Accross LA")
+
+# Saturdays and Sundays in the North Hollywood area are busy for iOS
