@@ -6,11 +6,12 @@ library(stringr)
 library(lubridate)
 library(plotly)
 library(leaflet)
+library(googleVis)
 
-source("R/load_data.R")
-source("R/subsets.R")
-source("R/load_shapefile.R")
-source("R/value_counts.R")
+#source("R/load_data.R")
+#source("R/subsets.R")
+#source("R/load_shapefile.R")
+#source("R/value_counts.R")
 
 # JS function ------------------------------------------------------------------ 
 #scroll <- "
@@ -68,7 +69,7 @@ ui <- dashboardPage(header, sidebar, body)
 server <- function(input, output) { 
   
   output$view <- renderGvis({
-   
+    
     df <- data.frame(origin=c(
       rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2#3",3)),
       visit=c(
@@ -85,10 +86,10 @@ server <- function(input, output) {
                  sankey="{link:{color:{fill:'lightblue'}}}"
                ))    
     
-   
+    
   })
 }
- # end server
+# end server
 
 
 # run app ---------------------------------------------------------------------- 
