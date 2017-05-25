@@ -14,6 +14,7 @@ requests2017 <- read_csv('C:/Users/conor/Downloads/MyLA311_Service_Request_Data_
 
 library(lubridate)
 library(zoo)
+library(dplyr)
 requests2017 <- requests2017[,c(1,2,3,4,5,6,7,8,9,10,21,22,23,24,28,29,31,32,33)]
 BOSService <- requests2017[requests2017$Owner=="BOS",]
 table(BOSService$Status)
@@ -37,6 +38,7 @@ x3$is_one_day <- ifelse(x3$TimeTaken <= 1, 1, 0)
 x3$is_one_week <- ifelse(x3$TimeTaken <= 7, 1, 0)
 x3$is_one_month <- ifelse(x3$TimeTaken <= 30, 1, 0)
 
+library(ggmap)
 LA <- get_map('Los Angeles')
 
 # Define server logic required to draw a histogram
