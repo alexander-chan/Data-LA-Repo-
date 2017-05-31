@@ -5,6 +5,21 @@ Private Repo for Data LA Project. *For members of UCLA Statistics Only.*
 We will do all our edits here together so that we can present the final polished, product to our client when it is finished.
 
 TODO List:
+
+1. remove hard code from sankey diagram
+
+2. fix logo in dashboard
+
+3. fix tabs so map code runs
+
+4. round quarter 1 using screenshots
+
+5. make function for map code
+
+6. fix colors on mile sewage cleaned bar charts
+
+==================================================
+
   * Create a Sankey Diagram for the CleanStat Data
       1. [X] Decide which package to use to create Sankey Diagrams 
         - @Alexander-Chan, Min
@@ -26,3 +41,5 @@ May 9th Call:
 * Introductions
 * TODO: Create a Sankey Diagram for the CleanStat Data
 * Use RSocrata to retrieve data and automate data dashboard 
+
+
