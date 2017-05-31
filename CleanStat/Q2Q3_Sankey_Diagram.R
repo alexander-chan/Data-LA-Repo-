@@ -1,13 +1,8 @@
 library(magrittr)
-q2q3 <- read.csv("merge.csv")
-names(q2q3)
-q2q31 <- q2q3[,c("NameInt","Q2_CS_Score_Round", "score_round_q3")]
 
+# @Min use this to replace hardcoded numbers in the Sankey Diagram
 q2 <- read.csv("Clean_Streets_Index_Grids_2016_Q2.csv")
 q3 <- read.csv("LACityCleanStat_Q32016_Grids.csv")
-
-names(q2)
-names(q3)
 
 q2q3 <- merge(q2, q3, by = "NameInt")
 q2q3 <- q2q3[,c("NameInt","Q2_CS_Score_Round", "GridScrRounded")]
