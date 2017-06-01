@@ -1,0 +1,19 @@
+May 25th notes:
+document is for data, not for the data analysis. 
+For seal: try removing the www and put seal_of_los_angeles.png
+	or use wikipedia link to seal
+	or show sanitation logo
+
+Work on basin work
+	#Issues 4 and 5 - 
+		Miles of Sewer Cleaned
+		Sanitation Sewer Overflows
+		"Sunrise reports" - Easy to deal with 
+
+Do Mondays to Mondays
+	Bar chart with number of requests. Compare # of requests with solve time.
+	Be creative - do whaat you want
+Report every friday
+
+Meeting 9 or 11:30am
+	
