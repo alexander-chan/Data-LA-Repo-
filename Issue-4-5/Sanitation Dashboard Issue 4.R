@@ -5,6 +5,8 @@ miles_sewage_cleaned$`Calendar Year` <- ifelse(miles_sewage_cleaned$`Month Numbe
                                                miles_sewage_cleaned$`Fiscal Year`)
 month_names <- c('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC')
 miles_sewage_cleaned$`Month Factor` <- factor(miles_sewage_cleaned$Month, levels = rev(month_names))
+miles_sewage_cleaned$`Month Number Factor` <- factor(miles_sewage_cleaned$`Month Number`, levels = 12:1)
+
 
 
 colors <- c("#1a1334",  "#26294a" , "#01545a",    
@@ -14,10 +16,11 @@ colors <- c("#1a1334",  "#26294a" , "#01545a",
 
 library(ggplot2)
 ggplot(data = miles_sewage_cleaned, aes(`Fiscal Year`)) + 
-  geom_bar(aes(weight = `Miles of Sewer Cleaned`), fill = "#7bccc4") +
+  geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Number Factor`)) +
   coord_flip() + 
   theme_bw() +
-  ggtitle('Bar Chart of Miles Cleaned by Fiscal Year and Month')
+  ggtitle('Bar Chart of Miles Cleaned by Fiscal Year and Month')+
+  scale_fill_manual(values=colors)
 
 ggplot(data = miles_sewage_cleaned, aes(`Calendar Year`)) +
   geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
@@ -26,8 +29,8 @@ ggplot(data = miles_sewage_cleaned, aes(`Calendar Year`)) +
   ggtitle('Bar Chart of Miles Cleaned by Calendar Year and Month') +
   scale_fill_manual(values=colors)
 
-ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% c(2014:2016),], aes(Month)) +
-  geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = Month)) +
+ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% c(2014:2016),], aes(`Month Factor`)) +
+  geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
   theme_bw() +
   ggtitle('Bar Chart of Miles Cleaned by Month for Calendar Years between 2014-2016') +
   scale_x_discrete(limits = month_names)+
