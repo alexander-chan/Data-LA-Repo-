@@ -1,5 +1,5 @@
 library(readr)
-flow_data <- read_csv('C:\\Users\\Conor\\Downloads\\Flow Data - Sheet1.csv', skip = 1)
+flow_data <- read_csv('Flow Data - Sheet1.csv', skip = 1)
 flow_data <- flow_data[c(1:45),]
 
 i <- min(na.omit(flow_data[,1]))
@@ -31,7 +31,8 @@ ggplot(data = flow_data[flow_data$YEAR %in% c(2006:2016),], aes(x = as.factor(YE
   geom_bar(aes(weight = `Total Combined Reuse`, fill = quarter_rev_factor)) +
   theme_bw() + 
   coord_flip() +
-  ggtitle('Bar Chart of Total Recycle by Year for 2006-2016')
+  ggtitle('Bar Chart of Total Recycle by Year for 2006-2016')+
+  guides(fill = guide_legend(reverse=TRUE))
 
 ggplot(data = flow_data, aes(x = quarter_factor)) +
   geom_bar(aes(weight = `Total Combined Reuse`, fill = quarter_factor)) +
