@@ -2,7 +2,7 @@
 ## source scripts ##
 ####################
 
-setwd("~/Desktop") # set your local working directory
+setwd("~/GitHub/Data-LA-Repo-") # set your local working directory
 
 # If the script doesn't run:
 # 1) make sure you're in the correct working directory
@@ -35,9 +35,22 @@ body <- dashboardBody(
   tags$body(id = "body"),
   includeCSS("./city_la_shiny/www/custom.css"),
   
-  mainPanel(
-    htmlOutput("sankey")
-  )
+  
+  tabItems(
+    tabItem(
+      tabName = "sankey",
+      mainPanel(htmlOutput("sankey")))#,
+    
+    
+    # tabItem(
+    #   tabName = "sankey",
+    #   mainPanel(htmlOutput("sankey"))),
+    # 
+    # tabItem(
+    #   tabName = "sankey",
+    #   mainPanel(htmlOutput("sankey"))),
+    )
+  
 ) # body
 
 ui <- dashboardPage(header, sidebar, body)
@@ -69,15 +82,17 @@ server <- function(input, output) {
   #################################
   # Issue 4: Miles/sewage cleaned #
   #################################
-  # output$sewer
+  #output$sewer <- renderPlotly({
+    
+  #})
 
 
   #################################
   # Issue 5: Overflow             #
   #################################
-  # output$overflow 
-  # 
-  
+  #output$overflow <- renderPlotly({
+    
+  #})
   
 }
 # end server
