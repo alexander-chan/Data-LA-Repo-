@@ -13,6 +13,7 @@ source("./city_la_shiny/code/1_packages.R") # load all libraries
 source("./city_la_shiny/code/2_colors.R") # load color palettes
 source("./city_la_shiny/code/3_sankey_prep.R") # load sankey weights
 source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
+source("./city_la_shiny/code/5_issue5_prep.R") # load issue 5 prep
 
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
@@ -44,10 +45,16 @@ body <- dashboardBody(
     
    tabItem(
      tabName = "sewer",
-     mainPanel(plotlyOutput("sewer_view")))
-    )
+     mainPanel(plotlyOutput("sewer_view"))),
+    
   
-) # body
+  tabItem(
+    tabName = "overflow",
+    mainPanel(plotlyOutput("overflow_view")))
+  )
+)
+  
+ # body
 
 ui <- dashboardPage(header, sidebar, body)
 
@@ -87,15 +94,23 @@ server <- function(input, output) {
       scale_fill_manual(values=colors)+
       guides(fill = guide_legend(reverse = TRUE))
     
-    plotly::ggplotly(monthly)
+    ggplotly(monthly)
   })
 
 
   #################################
   # Issue 5: Overflow             #
   #################################
-  output$overflow <- renderPlotly({
+  output$overflow_view <- renderPlotly({
+    monthly <- ggplot(data = sewer_overflow[sewer_overflow$`Calendar Year` %in% c(2015:2016),], aes(`Month Factor`)) +
+      geom_bar(aes(weight = `Sanitary Sewer Overflows`, fill = `Month Factor`)) +
+      theme_bw() +
+      ggtitle('Overflow Bar Chart by Month for Calendar Years 2015-2016') +
+      scale_x_discrete(limits = month_names) +
+      scale_fill_manual(values=colors)+
+      guides(fill = guide_legend(reverse = TRUE))
     
+    ggplotly(monthly)
   })
   
 }
