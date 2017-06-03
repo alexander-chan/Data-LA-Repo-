@@ -39,16 +39,12 @@ body <- dashboardBody(
   tabItems(
     tabItem(
       tabName = "sankey",
-      mainPanel(htmlOutput("sankey")))#,
+      mainPanel(htmlOutput("sankey_view"))),
     
     
-    # tabItem(
-    #   tabName = "sankey",
-    #   mainPanel(htmlOutput("sankey"))),
-    # 
-    # tabItem(
-    #   tabName = "sankey",
-    #   mainPanel(htmlOutput("sankey"))),
+   tabItem(
+     tabName = "sewer",
+     mainPanel(plotlyOutput("sewer_view")))
     )
   
 ) # body
@@ -61,7 +57,7 @@ server <- function(input, output) {
   #################################
   #       Sankey Diagram          #  
   #################################
-  output$sankey <- renderGvis({
+  output$sankey_view <- renderGvis({
     
     df <- data.frame(origin=c(
       rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2#3",3)),
@@ -82,17 +78,25 @@ server <- function(input, output) {
   #################################
   # Issue 4: Miles/sewage cleaned #
   #################################
-  #output$sewer <- renderPlotly({
+  output$sewer_view <- renderPlotly({
+    monthly <- ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% c(2014:2016),], aes(`Month Factor`)) +
+      geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
+      theme_bw() +
+      ggtitle('Bar Chart of Miles Cleaned by Month for Calendar Years between 2014-2016') +
+      scale_x_discrete(limits = month_names)+
+      scale_fill_manual(values=colors)+
+      guides(fill = guide_legend(reverse = TRUE))
     
-  #})
+    plotly::ggplotly(monthly)
+  })
 
 
   #################################
   # Issue 5: Overflow             #
   #################################
-  #output$overflow <- renderPlotly({
+  output$overflow <- renderPlotly({
     
-  #})
+  })
   
 }
 # end server
