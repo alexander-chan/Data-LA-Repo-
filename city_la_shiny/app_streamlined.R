@@ -1,13 +1,18 @@
 ####################
 ## source scripts ##
 ####################
+
 setwd("~/Desktop") # set your local working directory
+
+# If the script doesn't run:
+# 1) make sure you're in the correct working directory
+# 2) make sure you installed all the pacakges
 
 source("./city_la_shiny/code/0_load_data.R")
 source("./city_la_shiny/code/1_packages.R") # load all libraries
 source("./city_la_shiny/code/2_colors.R") # load color palettes
 source("./city_la_shiny/code/3_sankey_prep.R") # load sankey weights
-# source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
+source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
 
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
@@ -67,7 +72,9 @@ server <- function(input, output) {
   # output$sewer
 
 
-  # # Issue 5
+  #################################
+  # Issue 5: Overflow             #
+  #################################
   # output$overflow 
   # 
   

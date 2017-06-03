@@ -1,14 +1,7 @@
-library(shiny)
-library(shinydashboard)
+# load pacakges
+pkgs <- c("shiny", "shinydashboard", "tidyverse", "stringr", 
+          "lubridate", "plotly", "leaflet", "googleVis", "zoo",
+          "dplyr", "ggmap", "readr")
+sapply(pkgs, require, character.only = TRUE)
+
 #library(shinyjs)
-library(tidyverse)
-library(stringr)
-library(lubridate)
-library(plotly)
-library(leaflet)
-library(googleVis)
-library(lubridate)
-library(zoo)
-library(dplyr)
-library(ggmap)
-library(readr)
