@@ -10,13 +10,13 @@ TODO List:
 
 2. fix logo in dashboard
 
-3. fix tabs so map code runs
+3. [X] fix tabs so map code runs
 
 4. round quarter 1 using screenshots
 
 5. make function for map code
 
-6. fix colors on mile sewage cleaned bar charts
+6. [X] fix colors on mile sewage cleaned bar charts
 
 ==================================================
 
