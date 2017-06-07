@@ -14,6 +14,7 @@ source("./city_la_shiny/code/2_colors.R") # load color palettes
 source("./city_la_shiny/code/3_sankey_prep.R") # load sankey weights
 source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
 source("./city_la_shiny/code/5_issue5_prep.R") # load issue 5 prep
+source("./city_la_shiny/code/6_Call_Center_Prep.R") #Loading and fixing call center
 
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
@@ -26,7 +27,8 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Sankey Diagram", tabName = "sankey", icon = icon("bar-chart")),
     menuItem("Miles Per Sewer Cleaned", tabName = "sewer", icon = icon("bar-chart")),
-    menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart"))
+    menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart")),
+    menuItem("Call Center Calculations", tabName = "callcenter",icon("bar-chart"))
   )
 )
 
@@ -50,7 +52,12 @@ body <- dashboardBody(
   
   tabItem(
     tabName = "overflow",
-    mainPanel(plotlyOutput("overflow_view")))
+    mainPanel(plotlyOutput("overflow_view"))),
+  
+  
+  tabItem(
+    tabName = "callcenter",
+    mainPanel(plotlyOutput("callcenter_view")))
   )
 )
   
@@ -114,6 +121,9 @@ server <- function(input, output) {
   })
   
 }
+  #################################
+  #                               #
+
 # end server
 
 

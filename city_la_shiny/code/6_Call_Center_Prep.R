@@ -1,5 +1,5 @@
 #source file for Call Center table and bar-line graph
-BOS16readynew <- readRDS(file = "BOS16ready.RDS")
+BOS16readynew <- readRDS(file = "./city_LA_shiny/data/BOS16ready.RDS")
 
 x4plus16 <- BOS16readynew %>% group_by(CD,weekReported, RequestType) %>%
   summarise(mean(TimeTaken), median(TimeTaken))
