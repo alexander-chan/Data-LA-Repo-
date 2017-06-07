@@ -35,7 +35,7 @@ warm_gradient <- data_frame(
 )
 
 
-requests2017 <- read_csv('C:/Users/Jon/Downloads/MyLA311_Service_Request_Data_2017.csv')
+requests2017 <- read_csv("C:/Users/Joseph/Downloads/MyLA311_Service_Request_Data_2017.csv")
 
 
 library(lubridate)
