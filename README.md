@@ -6,6 +6,13 @@ We will do all our edits here together so that we can present the final polished
 
 TODO List:
 
+- Add buttons to Dashboard to select which data to visualize
+- Finalize Dashboard
+- Create Powerpoint for our Tuesday presentation
+
+================================================
+
+
 1. remove hard code from sankey diagram
 
 2. fix logo in dashboard
