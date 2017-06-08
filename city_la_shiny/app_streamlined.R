@@ -73,7 +73,7 @@ body <- dashboardBody(
     selectInput(input = 'Year',
                 label = 'Select Which Year',
                 choices = c("2016","2017"),
-                selected = "2017"),
+                selected = "2016"),
     selectInput(input = 'Week',
                 label = 'Select Which Week',
                 choices = 1:52,
@@ -173,13 +173,13 @@ server <- function(input, output) {
     }
   })
   output$callcenter2_view <- renderPlotly({
-    if(input$Year == "2016"){
+    if(input$Year == 2016){
     p2 <- plot_ly(
       x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
       z = valuematavg(xmodlist16,as.numeric(input$Week)),
       type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
     p2
-    }else if(input$Year == "2017"){
+    }else if(input$Year == 2017){
       p3 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
         z = valuematavg(xmodlist,as.numeric(input$Week)),
