@@ -28,7 +28,8 @@ sidebar <- dashboardSidebar(
     menuItem("Sankey Diagram", tabName = "sankey", icon = icon("bar-chart")),
     menuItem("Miles Per Sewer Cleaned", tabName = "sewer", icon = icon("bar-chart")),
     menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart")),
-    menuItem("Call Center Calculations", tabName = "callcenter",icon("bar-chart"))
+    menuItem("Call Center Requests", tabName = "callcenterrequests",icon = icon("bar-chart")),
+    menuItem("Call Center Timing",tabName = "callcentertiming",icon = icon("table"))
   )
 )
 
@@ -53,11 +54,31 @@ body <- dashboardBody(
   tabItem(
     tabName = "overflow",
     mainPanel(plotlyOutput("overflow_view"))),
-  
+
   
   tabItem(
-    tabName = "callcenter",
-    mainPanel(plotlyOutput("callcenter_view")))
+    tabName = "callcenterrequests",
+    selectInput(input = 'CD',
+                label = 'Select Which Council District',
+                choices = 1:15,
+                selected = 1),
+    selectInput(input = 'Year',
+                label = 'Select Which Year',
+                choices = c("2016","2017"),
+                selected = "2017"),
+    mainPanel(plotlyOutput("callcenter1_view"))),
+  
+  tabItem(
+    tabName = "callcentertiming",
+    selectInput(input = 'Year',
+                label = 'Select Which Year',
+                choices = c("2016","2017"),
+                selected = "2017"),
+    selectInput(input = 'Week',
+                label = 'Select Which Week',
+                choices = 1:52,
+                selected = 1),
+    mainPanel(plotlyOutput("callcenter2_view")))
   )
 )
   
@@ -120,10 +141,53 @@ server <- function(input, output) {
     ggplotly(monthly)
   })
   
-}
   #################################
-  #                               #
-
+  # Issue 8: Call Center          #
+  #################################
+  output$callcenter1_view <- renderPlotly({
+    
+    if(input$Year=="2016"){
+      betterg2 <- plot_ly(xmodlist3.16[[as.numeric(input$CD)]]) %>%
+        add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
+                  marker = list(color = 'indianred'),
+                  hoverinfo = "all") %>%
+        add_trace(x = ~week, y = ~nSolved, type = 'scatter', mode = 'lines', name = 'Solved',
+                  line = list(color = 'dodgerblue'),
+                  hoverinfo = ~paste("Week", week, "Solved",nSolved))%>%
+        layout(title = 'Reported and Solved Calls per Week',
+               xaxis = list(title = "Week"),
+               yaxis = list(side = 'left', title = 'Number of Cases', showgrid = FALSE, zeroline = FALSE))
+      betterg2
+    }else if(input$Year=="2017"){
+      betterg3 <- plot_ly(xmodlist3.17[[as.numeric(input$CD)]]) %>%
+        add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
+                  marker = list(color = 'indianred'),
+                  hoverinfo = "all") %>%
+        add_trace(x = ~week, y = ~nSolved, type = 'scatter', mode = 'lines', name = 'Solved',
+                  line = list(color = 'dodgerblue'),
+                  hoverinfo = ~paste("Week", week, "Solved",nSolved))%>%
+        layout(title = 'Reported and Solved Calls per Week',
+               xaxis = list(title = "Week"),
+               yaxis = list(side = 'left', title = 'Number of Cases', showgrid = FALSE, zeroline = FALSE))
+      betterg3
+    }
+  })
+  output$callcenter2_view <- renderPlotly({
+    if(input$Year == "2016"){
+    p2 <- plot_ly(
+      x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
+      z = valuematavg(xmodlist16,as.numeric(input$Week)),
+      type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
+    p2
+    }else if(input$Year == "2017"){
+      p3 <- plot_ly(
+        x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
+        z = valuematavg(xmodlist,as.numeric(input$Week)),
+        type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist,as.numeric(input$Week)))
+      p3 
+    }
+  })
+}
 # end server
 
 
