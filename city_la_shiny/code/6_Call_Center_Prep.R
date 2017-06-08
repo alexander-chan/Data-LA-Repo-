@@ -89,5 +89,5 @@ for(i in 1: length(unique(newx7.16$CD))){
  xmodlist3.17 <- list()
  length(unique(newx7.17$CD))
  for(i in 1: length(unique(newx7.17$CD))){
-   xmodlist3.17[[i]] <- newx7[newx7.17$CD== i ,]
+   xmodlist3.17[[i]] <- newx7.17[newx7.17$CD== i ,]
  }
