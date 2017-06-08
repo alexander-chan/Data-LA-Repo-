@@ -17,15 +17,19 @@ source("./city_la_shiny/code/5_issue5_prep.R") # load issue 5 prep
 
 library(lubridate)
 library(ggmap)
-date <- as.Date(Sys.time())
-previous_sunday <- floor_date(date, "week")
-#Copy the date from as.POSIXct to get the last Sunday for reading in data
-as.POSIXct(previous_sunday)
 
-testSocrata2 <- read.socrata("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= '2017-06-04'")
+#Determines the date so we can refresh every ____day
+date <- as.POSIXct(Sys.time())
+
+#If we refresh on Sunday, leads to issue where Sunday will have no data.
+#Thus, we technically will refresh on Monday when we have at least one day of data
+ifelse(wday(date) == 1, previous_sunday <- floor_date(date - 86400, "week"), 
+       previous_sunday <- floor_date(date, "week"))
+
+testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= ", 
+                                   paste0("'",previous_sunday, "'")))
+#Get the map of LA
 LA <- get_map('Los Angeles')
-
-
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
   title = tags$a(href = "",
