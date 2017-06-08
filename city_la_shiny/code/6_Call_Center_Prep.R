@@ -67,7 +67,7 @@ for(i in 1: length(unique(newx7.16$CD))){
  
  x4plus.17 <- BOSServiceC %>% group_by(CD,weekReported, RequestType) %>%
    summarise(mean(TimeTaken), median(TimeTaken))
- x4mod <- x4plus[,c(1,2,3,5)]
+ x4mod <- x4plus.17[,c(1,2,3,5)]
  names(x4mod)[4] <- "median.TimeTaken"
  x4mod2 <- spread(x4mod,RequestType,median.TimeTaken)
  x4mod2[(is.na(x4mod2))] <- 0
