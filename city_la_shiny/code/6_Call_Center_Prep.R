@@ -51,9 +51,10 @@ for(i in 1: length(unique(newx7.16$CD))){
   xmodlist3.16[[i]] <- newx7.16[newx7.16$CD== i ,]
 }
 
-
+ BOS17preJune <- readRDS("./city_LA_shiny/data/BOS17preJune.RDS")
  Service2017 <- read.socrata("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= '2017-06-04' ")
  
+ Service2017 <- Service2017[,c(1,2,3,4,5,6,7,8,9,10,21,22,23,24,28,29,31,32,33)]
  BOSService <- Service2017[Service2017$Owner=="BOS",]
  BOSServiceC <- BOSService[BOSService$Status=="Closed",]
  BOSServiceC$Created <- as.POSIXct(BOSServiceC$CreatedDate,"%m/%d/%Y %I:%M:%S %p",tz = "America/Los_Angeles") 
@@ -64,6 +65,11 @@ for(i in 1: length(unique(newx7.16$CD))){
  hours <- hour(BOSServiceC$Created)
  BOSServiceC$weekReported <- week(BOSServiceC$Created)
  BOSServiceC$weekSolved <- week(BOSServiceC$Updated)
+ BOSServiceC$CreatedDate <- as.character(BOSServiceC$CreatedDate)
+ BOSServiceC$UpdatedDate <- as.character(BOSServiceC$UpdatedDate)
+ 
+ BOSServiceC <- rbind(BOSServiceC,BOS17preJune)
+ BOSServiceC <- BOSServiceC[BOSServiceC$RequestType %in% c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"),]
  
  x4plus.17 <- BOSServiceC %>% group_by(CD,weekReported, RequestType) %>%
    summarise(mean(TimeTaken), median(TimeTaken))
