@@ -136,7 +136,7 @@ body <- dashboardBody(
     selectInput(input = 'Year',
                 label = 'Select Which Year',
                 choices = c(2016,2017),
-                selected = 2016),
+                selected = 2017),
     selectInput(input = 'Week',
                 label = 'Select Which Week',
                 choices = 1:52,
