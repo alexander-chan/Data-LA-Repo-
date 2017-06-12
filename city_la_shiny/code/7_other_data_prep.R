@@ -10,7 +10,8 @@ testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA
                                    paste0("'",previous_sunday, "'")))
 
 
-flow_data <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1aTjWGg8P3C5oiz4HkB7q4rmOCXmVCoZ1VHyRw3IjDso/edit#gid=0')
+#flow_data <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1aTjWGg8P3C5oiz4HkB7q4rmOCXmVCoZ1VHyRw3IjDso/edit#gid=0')
+flow_data <- read_csv("./city_LA_shiny/data/Flow Data - Sheet 1.csv")
 names(flow_data) <- flow_data[1,]
 flow_data <- flow_data[c(2:46),]
 flow_data[,c(1,3:12, 14:16)] <- sapply(flow_data[,c(1,3:12,14:16)], as.numeric)
