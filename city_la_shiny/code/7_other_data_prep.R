@@ -6,9 +6,10 @@ date <- as.POSIXct(Sys.time())
 ifelse(wday(date) == 1, previous_sunday <- floor_date(date - 86400, "week"), 
        previous_sunday <- floor_date(date, "week"))
 
-testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= ", 
+#testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= ", 
                                    paste0("'",previous_sunday, "'")))
 
+testSocrata2 <- read_csv("./city_LA_shiny/data/Weekly Call Center.csv")
 
 #flow_data <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1aTjWGg8P3C5oiz4HkB7q4rmOCXmVCoZ1VHyRw3IjDso/edit#gid=0')
 flow_data <- read_csv("./city_LA_shiny/data/Flow Data - Sheet 1.csv")
