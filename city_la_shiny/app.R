@@ -3,65 +3,15 @@ setwd("C:/Users//conor//Documents//GitHub//Data-LA-Repo-") # set your local work
 # 1) make sure you're in the correct working directory
 # 2) make sure you installed all the pacakges
 
-library(readr)
-library(RSocrata)
-
-
-source("./city_la_shiny/code/0_load_data.R")
 source("./city_la_shiny/code/1_packages.R") # load all libraries
+source("./city_la_shiny/code/0_load_data.R")
 source("./city_la_shiny/code/2_colors.R") # load color palettes
 source("./city_la_shiny/code/3_sankey_prep.R") # load sankey weights
 source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
 source("./city_la_shiny/code/5_issue5_prep.R") # load issue 5 prep
 source("./city_la_shiny/code/6_Call_Center_Prep.R") #Loading and fixing call center
+source("./city_la_shiny/code/7_other_data_prep.R") #Loading flow and weekly call center data
 
-
-library(lubridate)
-library(ggmap)
-
-#Determines the date so we can refresh every ____day
-date <- as.POSIXct(Sys.time())
-
-#If we refresh on Sunday, leads to issue where Sunday will have no data.
-#Thus, we technically will refresh on Monday when we have at least one day of data
-ifelse(wday(date) == 1, previous_sunday <- floor_date(date - 86400, "week"), 
-       previous_sunday <- floor_date(date, "week"))
-
-testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= ", 
-                                   paste0("'",previous_sunday, "'")))
-
-
-
-#install.packages('gsheet')
-library(gsheet)
-flow_data <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1aTjWGg8P3C5oiz4HkB7q4rmOCXmVCoZ1VHyRw3IjDso/edit#gid=0')
-names(flow_data) <- flow_data[1,]
-flow_data <- flow_data[c(2:46),]
-flow_data[,c(1,3:12, 14:16)] <- sapply(flow_data[,c(1,3:12,14:16)], as.numeric)
-
-i <- min(na.omit(flow_data[,1]))
-for(j in 1:nrow(flow_data)) {
-  flow_data[j,1] <- i
-  flow_data[j,14] <- i
-  if(!(is.na(flow_data[j+1,1]))) {
-    i <- i + 1
-  }
-}
-
-flow_data$`Percent Reuse of Total Flow` <- as.numeric(sub("%", "", flow_data$`Percent Reuse of Total Flow`))
-flow_data$`Percent Reuse` <- as.numeric(sub('%', '', flow_data$`Percent Reuse`))
-
-for(i in seq(4, nrow(flow_data), 4)) {
-  for(j in 1:3) {
-    flow_data[i - j, 15] <- flow_data[i,15]
-    flow_data[i - j, 16] <- flow_data[i,16]
-    flow_data[i - j, 17] <- flow_data[i,17]
-  }
-}
-
-quarter_names <- c('JAN - MAR', 'APR - JUN', 'JUL - SEP', 'OCT - DEC')
-flow_data$quarter_rev_factor <- factor(flow_data$QUARTER, levels = rev(quarter_names))
-flow_data$quarter_factor <- factor(flow_data$QUARTER, levels = quarter_names)
 #Get the map of LA
 LA <- get_map('Los Angeles')
 # ui --------------------------------------------------------------------------- 
@@ -250,14 +200,14 @@ server <- function(input, output) {
     }
     else if('All' %in% input$n_breaks) {
       heat_map <- ggmap(LA) +
-        stat_density2d(data = na.omit(testSocrata2[,c(24,25,31)]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
+        stat_density2d(data = na.omit(testSocrata2[,c("Latitude", "Longitude", "CD")]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
         scale_fill_gradient(low = 'yellow', high = 'red')
   
       ggplotly(heat_map)
     }
     else{
       heat_map <- ggmap(LA) +
-        stat_density2d(data = na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,c(24,25,31)]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
+        stat_density2d(data = na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,c("Latitude", "Longitude", "CD")]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
         scale_fill_gradient(low = 'yellow', high = 'red')
       ggplotly(heat_map)
     }
@@ -317,22 +267,22 @@ server <- function(input, output) {
   #################################
   output$flow_view <- renderPlotly({
       if(input$years %in% c(2006:2016)) {
-        monthly <- ggplot(data = flow_data[flow_data$YEAR %in% input$years,], aes(x = quarter_factor)) +
-          geom_bar(aes(weight = `Total Combined Reuse`, fill = quarter_factor)) +
+        yearly <- ggplot(flow_melt[flow_melt$YEAR %in% input$years,], aes(x = YEAR, y = value)) +
+          geom_bar(aes(fill = variable), stat = 'identity', position = 'dodge') +
           theme_bw() +
-          ggtitle(paste('Bar Chart of Total Recycle by Quarter in Year', input$years))
+          ggtitle(paste('Bar Chart of Average Flow and Reuse for ', input$years))
         
-        ggplotly(monthly)
+        ggplotly(yearly)
       }
       else {
-        flow <- ggplot(data = flow_data, aes(x = quarter_factor)) +
-          geom_bar(aes(weight = `Total Combined Reuse`, fill = quarter_factor)) +
+        yearly <- ggplot(flow_melt, aes(x = YEAR, y = value)) +
+          geom_bar(aes(fill = variable), stat = 'identity', position = 'dodge') +
           theme_bw() +
-          ggtitle('Bar Chart of Total Recycle by Quarter')
+          ggtitle('Bar Chart of Average Flow and Reuse by Year')
         
-        ggplotly(flow)
+        ggplotly(yearly)
       }
-    })
+  })
   
 }
 # end server
