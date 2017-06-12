@@ -12,7 +12,7 @@ ifelse(wday(date) == 1, previous_sunday <- floor_date(date - 86400, "week"),
 testSocrata2 <- read_csv("./city_LA_shiny/data/Weekly Call Center.csv")
 
 #flow_data <- gsheet2tbl('https://docs.google.com/spreadsheets/d/1aTjWGg8P3C5oiz4HkB7q4rmOCXmVCoZ1VHyRw3IjDso/edit#gid=0')
-flow_data <- read_csv("./city_LA_shiny/data/Flow Data - Sheet 1.csv")
+flow_data <- read_csv("./city_LA_shiny/data/Flow Data - Sheet1.csv")
 names(flow_data) <- flow_data[1,]
 flow_data <- flow_data[c(2:46),]
 flow_data[,c(1,3:12, 14:16)] <- sapply(flow_data[,c(1,3:12,14:16)], as.numeric)
