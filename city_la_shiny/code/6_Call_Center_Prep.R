@@ -55,7 +55,7 @@ for(i in 1: length(unique(newx7.16$CD))){
  #Service2017 <- read.socrata("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= '2017-06-04' ")
  
  #Service2017 <- Service2017[,c(1,2,3,4,5,6,7,8,9,10,21,22,23,24,28,29,31,32,33)]
- BOSService <- Service2017[Service2017$Owner=="BOS",]
+ #BOSService <- Service2017[Service2017$Owner=="BOS",]
  BOSServiceC <- BOSService[BOSService$Status=="Closed",]
  BOSServiceC$Created <- as.POSIXct(BOSServiceC$CreatedDate,"%m/%d/%Y %I:%M:%S %p",tz = "America/Los_Angeles") 
  BOSServiceC$Updated <- as.POSIXct(BOSServiceC$UpdatedDate,"%m/%d/%Y %I:%M:%S %p",tz = "America/Los_Angeles")
