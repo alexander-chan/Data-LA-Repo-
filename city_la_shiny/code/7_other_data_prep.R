@@ -7,7 +7,7 @@ ifelse(wday(date) == 1, previous_sunday <- floor_date(date - 86400, "week"),
        previous_sunday <- floor_date(date, "week"))
 
 #testSocrata2 <- read.socrata(paste("https://data.lacity.org/A-Well-Run-City/MyLA311-Service-Request-Data-2017/d4vt-q4t5?$where=updateddate >= ", 
-                                   paste0("'",previous_sunday, "'")))
+#                                   paste0("'",previous_sunday, "'")))
 
 testSocrata2 <- read_csv("./city_LA_shiny/data/Weekly Call Center.csv")
 
