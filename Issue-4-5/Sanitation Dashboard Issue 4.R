@@ -1,6 +1,6 @@
 library(readr)
 #read in data
-miles_sewage_cleaned <- read_csv('LASAN__Miles_of_Sewer_Cleaned.csv')
+miles_sewage_cleaned <- read_csv('C:/Users/jon/Downloads/LASAN__Miles_of_Sewer_Cleaned.csv')
 
 #creating calendar year variable
 miles_sewage_cleaned$`Calendar Year` <- ifelse(miles_sewage_cleaned$`Month Number` %in% c(1:6), 
