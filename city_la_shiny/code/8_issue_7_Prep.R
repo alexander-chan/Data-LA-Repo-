@@ -1,5 +1,5 @@
 #catch_basin <- read.socrata("https://data.lacity.org/A-Livable-and-Sustainable-City/LASAN-Number-of-Catch-Basins-Cleaned/8a3v-f7cr")
-catch_basin <- read.csv('./city/city_la_shiny/data/LASAN___Number_of_Catch_Basins_Cleaned.csv')
+catch_basin <- read.csv('./city_la_shiny/data/LASAN___Number_of_Catch_Basins_Cleaned.csv')
 
 catch_basin$`Calendar Year` <- ifelse(catch_basin$`FYMonth` %in% c(1:6), 
                                                catch_basin$`FY` - 1,
