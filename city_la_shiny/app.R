@@ -13,7 +13,7 @@ source("./city_la_shiny/code/6_Call_Center_Prep.R") #Loading and fixing call cen
 source("./city_la_shiny/code/7_other_data_prep.R") #Loading flow and weekly call center data
 
 #Get the map of LA
-LA <- get_map('Los Angeles')
+#LA <- get_map('Los Angeles')
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
   title = tags$a(href = "",
@@ -69,7 +69,7 @@ body <- dashboardBody(
                   label = 'Select Which Council District',
                   choices = c('None', 1:15, 'All'),
                   selected = 1),
-      mainPanel(plotlyOutput("heatmap_view"))),
+      mainPanel(leafletOutput("heatmap_view"))),
     
     tabItem(
       tabName = "flow",
@@ -145,7 +145,8 @@ server <- function(input, output) {
         ggtitle(paste('Bar Chart of Miles Cleaned by Month for Calendar Year ', input$n_years)) +
         scale_x_discrete(limits = month_names)+
         scale_fill_manual(values=colors)+
-        guides(fill = guide_legend(reverse = TRUE))
+        guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
       
       ggplotly(monthly)
     }
@@ -156,7 +157,8 @@ server <- function(input, output) {
       ggtitle('Bar Chart of Miles Cleaned by Month for Calendar Years between 2014-2016') +
       scale_x_discrete(limits = month_names)+
       scale_fill_manual(values=colors)+
-      guides(fill = guide_legend(reverse = TRUE))
+      guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
     
     ggplotly(monthly)
     }
@@ -174,7 +176,8 @@ server <- function(input, output) {
         ggtitle(paste('Overflow Bar Chart by Month for Calendar Year ', input$n_years2)) +
         scale_x_discrete(limits = month_names) +
         scale_fill_manual(values=colors)+
-        guides(fill = guide_legend(reverse = TRUE))
+        guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
       
       ggplotly(monthly)
     }
@@ -185,7 +188,8 @@ server <- function(input, output) {
         ggtitle('Overflow Bar Chart by Month for Calendar Years 2015-2016') +
         scale_x_discrete(limits = month_names) +
         scale_fill_manual(values=colors)+
-        guides(fill = guide_legend(reverse = TRUE))
+        guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
       
       ggplotly(monthly)
     }
@@ -193,25 +197,26 @@ server <- function(input, output) {
   #################################
   #           Heatmaps            #
   #################################
-  output$heatmap_view <- renderPlotly({
+  output$heatmap_view <- renderLeaflet({    
+    testSocrata2$TimeTaken <- round((testSocrata2$UpdatedDate - testSocrata2$CreatedDate)/86400)
     if('None' %in% input$n_breaks) {
-      heat_map <- ggmap(LA)
-      ggplotly(heat_map)
+      leaflet(na.omit(testSocrata2)) %>% 
+        addProviderTiles("Thunderforest.TransportDark") %>% 
+        fitBounds(~min(Longitude), ~min(Latitude), ~max(Longitude), ~max(Latitude))
     }
     else if('All' %in% input$n_breaks) {
-      heat_map <- ggmap(LA) +
-        stat_density2d(data = na.omit(testSocrata2[,c("Latitude", "Longitude", "CD")]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
-        scale_fill_gradient(low = 'yellow', high = 'red')
-  
-      ggplotly(heat_map)
+      leaflet(na.omit(testSocrata2)) %>% 
+        addProviderTiles("Thunderforest.TransportDark") %>% 
+        addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
+                   blur = 20, max = 0.05, radius = 15)
     }
-    else{
-      heat_map <- ggmap(LA) +
-        stat_density2d(data = na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,c("Latitude", "Longitude", "CD")]), aes(x = Longitude, y = Latitude, fill = ..level..), geom = 'polygon') +
-        scale_fill_gradient(low = 'yellow', high = 'red')
-      ggplotly(heat_map)
+    else {
+      leaflet(na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,])) %>% 
+        addProviderTiles("Thunderforest.TransportDark") %>% 
+        addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
+                   blur = 20, max = 0.05, radius = 15)
     }
-    
+
   })
   
   #################################
@@ -270,7 +275,8 @@ server <- function(input, output) {
         yearly <- ggplot(flow_melt[flow_melt$YEAR %in% input$years,], aes(x = YEAR, y = value)) +
           geom_bar(aes(fill = variable), stat = 'identity', position = 'dodge') +
           theme_bw() +
-          ggtitle(paste('Bar Chart of Average Flow and Reuse for ', input$years))
+          ggtitle(paste('Bar Chart of Average Flow and Reuse for ', input$years)) +
+          ylab("Total Count")
         
         ggplotly(yearly)
       }
@@ -278,7 +284,8 @@ server <- function(input, output) {
         yearly <- ggplot(flow_melt, aes(x = YEAR, y = value)) +
           geom_bar(aes(fill = variable), stat = 'identity', position = 'dodge') +
           theme_bw() +
-          ggtitle('Bar Chart of Average Flow and Reuse by Year')
+          ggtitle('Bar Chart of Average Flow and Reuse by Year') +
+          ylab("Total Count")
         
         ggplotly(yearly)
       }
