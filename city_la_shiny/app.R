@@ -11,6 +11,7 @@ source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
 source("./city_la_shiny/code/5_issue5_prep.R") # load issue 5 prep
 source("./city_la_shiny/code/6_Call_Center_Prep.R") #Loading and fixing call center
 source("./city_la_shiny/code/7_other_data_prep.R") #Loading flow and weekly call center data
+source("./city_la_shiny/code/8_issue_7_Prep.R") #loading issue 7
 
 #Get the map of LA
 #LA <- get_map('Los Angeles')
@@ -28,7 +29,7 @@ sidebar <- dashboardSidebar(
     menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart")),
     menuItem("Heat Maps", tabName = 'heatmap', icon = icon("bar-chart")),
     menuItem("Flow Data", tabName = "flow", icon = icon("bar-chart")),
-    #menuItem("Catch Basin", tabName = "basin", icon = icon("bar-chart))
+    menuItem("Catch Basin", tabName = "basin", icon = icon("bar-chart")),
     menuItem("Call Center Requests", tabName = "callcenterrequests",icon = icon("bar-chart")),
     menuItem("Call Center Timing",tabName = "callcentertiming",icon = icon("table"))
   )
@@ -80,13 +81,14 @@ body <- dashboardBody(
                   choices = c(unique(as.character(flow_melt$YEAR)), 'All'),
                   selected = 'All'),
       mainPanel(plotlyOutput("flow_view"))),
-    
-    # tabItem(
-    #   tabName = "basin",
-    #   selectInput(input = 'nyears',
-    #               label = 'Select Calendar Year',
-    #               choices = c(unique(as.character())))
-    # )
+
+    tabItem(
+      tabName = "basin",
+      selectInput(input = 'nyears',
+                  label = 'Select Calendar Year',
+                  choices = c(unique(catch_basin$`Calendar Year`), "All"),
+                  selected = "All"),
+      mainPanel(plotlyOutput("basin_view"))),
     
     tabItem(
       tabName = "callcenterrequests",
@@ -317,7 +319,32 @@ server <- function(input, output) {
   #################################
   #     Issue 7: Catch Basin      #
   #################################
-  
+  output$basin_view <- renderPlotly({
+    if(input$nyears %in% unique(catch_basin$`Calendar Year`)) {
+      yearly <- ggplot(catch_basin[catch_basin$`Calendar Year` == input$nyears,], aes(`Month Factor`)) +
+        geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
+        theme_bw() +
+        ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for Calendar Year ', input$nyears)) +
+        scale_x_discrete(limits = month_names2)+
+        scale_fill_manual(values=colors)+
+        guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
+      
+      ggplotly(yearly)
+    }
+    else{
+      yearly <- ggplot(catch_basin, aes(`Month Factor`)) +
+        geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
+        theme_bw() +
+        ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for All Years')) +
+        scale_x_discrete(limits = month_names2)+
+        scale_fill_manual(values=colors)+
+        guides(fill = guide_legend(reverse = TRUE)) +
+        xlab("Month")
+      
+      ggplotly(yearly)
+    }
+  })
   
 }
 # end server
