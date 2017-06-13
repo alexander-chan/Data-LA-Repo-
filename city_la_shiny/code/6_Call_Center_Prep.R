@@ -37,8 +37,8 @@ valuemat <- function(xmodlist,Week){
   return(valuemat2rev)
 }
 
-x6.16 <- BOS16readynew %>% group_by(CD,weekReported,RequestType) %>% tally
-x7.16 <- BOS16readynew %>% group_by(CD,weekSolved,RequestType) %>% tally
+x6.16 <- BOS16readynew %>% group_by(CD,weekReported,RequestType) %>% tally %>% ungroup()
+x7.16 <- BOS16readynew %>% group_by(CD,weekSolved,RequestType) %>% tally %>% ungroup()
 names(x6.16)[2] <- "week"
 names(x7.16)[2] <- "week"
 newx7.16 <- full_join(x6.16,x7.16,by=c("CD","week","RequestType"))
@@ -85,8 +85,8 @@ for(i in 1: length(unique(newx7.16$CD))){
    xmodlist[[i]] <- x4mod2[x4mod2$weekReported== i ,]
  }
  
- x6.17 <- BOSServiceC %>% group_by(CD,weekReported,RequestType) %>% tally
- x7.17 <- BOSServiceC %>% group_by(CD,weekSolved,RequestType) %>% tally
+ x6.17 <- BOSServiceC %>% group_by(CD,weekReported,RequestType) %>% tally %>% ungroup()
+ x7.17 <- BOSServiceC %>% group_by(CD,weekSolved,RequestType) %>% tally %>% ungroup()
  names(x6.17)[2] <- "week"
  names(x7.17)[2] <- "week"
  newx7.17 <- full_join(x6.17,x7.17,by=c("CD","week","RequestType"))
