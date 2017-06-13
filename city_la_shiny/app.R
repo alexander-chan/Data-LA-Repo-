@@ -50,7 +50,7 @@ body <- dashboardBody(
       tabName = "sewer",
       selectInput(input = 'n_years',
                   label = 'Select Calendar Year',
-                  choices = c(2014:2016, 'All'),
+                  choices = c(unique(miles_sewage_cleaned$`Calendar Year`), 'All'),
                   selected = 'All'),
       mainPanel(plotlyOutput("sewer_view"))),
     
@@ -59,7 +59,7 @@ body <- dashboardBody(
       tabName = "overflow",
       selectInput(input = 'n_years2',
                   label = 'Select Calendar Year',
-                  choices = c(2015, 2016, 'All'),
+                  choices = c(unique(sewer_overflow$`Calendar Year`), 'All'),
                   selected = 'All'),
       mainPanel(plotlyOutput("overflow_view"))),
     
@@ -68,14 +68,15 @@ body <- dashboardBody(
       checkboxGroupInput(input = 'n_breaks',
                   label = 'Select Which Council District',
                   choices = c('None', 1:15, 'All'),
-                  selected = 1),
+                  selected = 1,
+                  inline = TRUE),
       mainPanel(leafletOutput("heatmap_view"))),
     
     tabItem(
       tabName = "flow",
       selectInput(input = 'years',
                   label = 'Select Calendar Year',
-                  choices = c(2006:2016, 'All'),
+                  choices = c(unique(as.character(flow_melt$YEAR)), 'All'),
                   selected = 'All'),
       mainPanel(plotlyOutput("flow_view"))),
     
@@ -93,7 +94,7 @@ body <- dashboardBody(
   
   tabItem(
     tabName = "callcentertiming",
-    selectInput(input = 'Year',
+    selectInput(input = 'YEAR',
                 label = 'Select Which Year',
                 choices = c("2016","2017"),
                 selected = "2016"),
@@ -138,7 +139,7 @@ server <- function(input, output) {
   # Issue 4: Miles/sewage cleaned #
   #################################
   output$sewer_view <- renderPlotly({
-    if(input$n_years %in% c(2014:2016)) {
+    if(input$n_years %in% unique(miles_sewage_cleaned$`Calendar Year`)) {
       monthly <- ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% input$n_years,], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
         theme_bw() +
@@ -154,7 +155,10 @@ server <- function(input, output) {
       monthly <- ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% c(2014:2016),], aes(`Month Factor`)) +
       geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
       theme_bw() +
-      ggtitle('Bar Chart of Miles Cleaned by Month for Calendar Years between 2014-2016') +
+      ggtitle(paste('Bar Chart of Miles Cleaned by Month for Calendar Years between', 
+                     min(miles_sewage_cleaned$`Calendar Year`),
+                     "to",
+                     max(miles_sewage_cleaned$`Calendar Year`))) +
       scale_x_discrete(limits = month_names)+
       scale_fill_manual(values=colors)+
       guides(fill = guide_legend(reverse = TRUE)) +
@@ -169,7 +173,7 @@ server <- function(input, output) {
   # Issue 5: Overflow             #
   #################################
   output$overflow_view <- renderPlotly({
-    if(input$n_years2 %in% c(2015, 2016)) {
+    if(input$n_years2 %in% unique(sewer_overflow$`Calendar Year`)) {
       monthly <- ggplot(data = sewer_overflow[sewer_overflow$`Calendar Year` %in% input$n_years2,], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Sanitary Sewer Overflows`, fill = `Month Factor`)) +
         theme_bw() +
@@ -185,7 +189,10 @@ server <- function(input, output) {
       monthly <- ggplot(data = sewer_overflow[sewer_overflow$`Calendar Year` %in% c(2015:2016),], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Sanitary Sewer Overflows`, fill = `Month Factor`)) +
         theme_bw() +
-        ggtitle('Overflow Bar Chart by Month for Calendar Years 2015-2016') +
+        ggtitle(paste('Overflow Bar Chart by Month for Calendar Years',
+                min(sewer_overflow$`Calendar Year`),
+                "to",
+                max(sewer_overflow$`Calendar Year`))) +
         scale_x_discrete(limits = month_names) +
         scale_fill_manual(values=colors)+
         guides(fill = guide_legend(reverse = TRUE)) +
@@ -200,18 +207,18 @@ server <- function(input, output) {
   output$heatmap_view <- renderLeaflet({    
     testSocrata2$TimeTaken <- round((testSocrata2$UpdatedDate - testSocrata2$CreatedDate)/86400)
     if('None' %in% input$n_breaks) {
-      leaflet(na.omit(testSocrata2)) %>% 
+      leaflet(na.omit(testSocrata2[,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         fitBounds(~min(Longitude), ~min(Latitude), ~max(Longitude), ~max(Latitude))
     }
     else if('All' %in% input$n_breaks) {
-      leaflet(na.omit(testSocrata2)) %>% 
+      leaflet(na.omit(testSocrata2[,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
                    blur = 20, max = 0.05, radius = 15)
     }
     else {
-      leaflet(na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,])) %>% 
+      leaflet(na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
                    blur = 20, max = 0.05, radius = 15)
@@ -251,13 +258,13 @@ server <- function(input, output) {
     }
   })
   output$callcenter2_view <- renderPlotly({
-    if(input$Year == 2016){
+    if(input$YEAR == 2016){
       p2 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
         z = valuematavg(xmodlist16,as.numeric(input$Week)),
         type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
       p2
-    }else if(input$Year == 2017){
+    }else if(input$YEAR == 2017){
       p3 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
         z = valuematavg(xmodlist,as.numeric(input$Week)),
@@ -271,7 +278,7 @@ server <- function(input, output) {
   #         Issue 9: Flow         #
   #################################
   output$flow_view <- renderPlotly({
-      if(input$years %in% c(2006:2016)) {
+      if(input$years %in% unique(flow_data$YEAR)) {
         yearly <- ggplot(flow_melt[flow_melt$YEAR %in% input$years,], aes(x = YEAR, y = value)) +
           geom_bar(aes(fill = variable), stat = 'identity', position = 'dodge') +
           theme_bw() +
