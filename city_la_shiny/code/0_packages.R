@@ -9,4 +9,5 @@ pkgs <- c("shiny", "shinydashboard", "tidyverse", "stringr",
          "devtools")
 sapply(pkgs, require, character.only = TRUE)
 devtools::install_github('bhaskarvk/leaflet.extras')
+library(leaflet.extras)
 #library(shinyjs)
