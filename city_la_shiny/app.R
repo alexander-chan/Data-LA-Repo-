@@ -3,8 +3,8 @@ setwd("C:/Users//conor//Documents//GitHub//Data-LA-Repo-") # set your local work
 # 1) make sure you're in the correct working directory
 # 2) make sure you installed all the pacakges
 
-source("./city_la_shiny/code/1_packages.R") # load all libraries
-source("./city_la_shiny/code/0_load_data.R")
+source("./city_la_shiny/code/0_packages.R") # load all libraries
+source("./city_la_shiny/code/1_load_data.R")
 source("./city_la_shiny/code/2_colors.R") # load color palettes
 source("./city_la_shiny/code/3_sankey_prep.R") # load sankey weights
 source("./city_la_shiny/code/4_issue4_prep.R") # load issue 4 prep
@@ -28,6 +28,7 @@ sidebar <- dashboardSidebar(
     menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart")),
     menuItem("Heat Maps", tabName = 'heatmap', icon = icon("bar-chart")),
     menuItem("Flow Data", tabName = "flow", icon = icon("bar-chart")),
+    #menuItem("Catch Basin", tabName = "basin", icon = icon("bar-chart))
     menuItem("Call Center Requests", tabName = "callcenterrequests",icon = icon("bar-chart")),
     menuItem("Call Center Timing",tabName = "callcentertiming",icon = icon("table"))
   )
@@ -80,29 +81,40 @@ body <- dashboardBody(
                   selected = 'All'),
       mainPanel(plotlyOutput("flow_view"))),
     
-  tabItem(
-    tabName = "callcenterrequests",
-    selectInput(input = 'CD',
-                label = 'Select Which Council District',
-                choices = 1:15,
-                selected = 1),
-    selectInput(input = 'Year',
-                label = 'Select Which Year',
-                choices = c("2016","2017"),
-                selected = "2017"),
-    mainPanel(plotlyOutput("callcenter1_view"))),
-  
-  tabItem(
-    tabName = "callcentertiming",
-    selectInput(input = 'YEAR',
-                label = 'Select Which Year',
-                choices = c("2016","2017"),
-                selected = "2016"),
-    selectInput(input = 'Week',
-                label = 'Select Which Week',
-                choices = 1:52,
-                selected = 1),
-    mainPanel(plotlyOutput("callcenter2_view")))
+    # tabItem(
+    #   tabName = "basin",
+    #   selectInput(input = 'nyears',
+    #               label = 'Select Calendar Year',
+    #               choices = c(unique(as.character())))
+    # )
+    
+    tabItem(
+      tabName = "callcenterrequests",
+      selectInput(input = 'CD',
+                  label = 'Select Which Council District',
+                  choices = 1:15,
+                  selected = 1),
+      selectInput(input = 'Year',
+                  label = 'Select Which Year',
+                  choices = c("2016","2017"),
+                  selected = "2016"),
+      selectInput(input = 'RequestType',
+                  label = 'Select Which Request Type',
+                  choice = c("Bulky Items","Dead Animal Removal","Electronic Waste","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other","Feedback"),
+                  selected = "Bulky Items"),
+      mainPanel(plotlyOutput("callcenter1_view"))),
+    
+    tabItem(
+      tabName = "callcentertiming",
+      selectInput(input = 'YEAR',
+                  label = 'Select Which Year',
+                  choices = c("2016","2017"),
+                  selected = "2017"),
+      selectInput(input = 'Week',
+                  label = 'Select Which Week',
+                  choices = 1:52,
+                  selected = 1),
+      mainPanel(plotlyOutput("callcenter2_view")))
 )
   
 )
@@ -231,8 +243,10 @@ server <- function(input, output) {
   #################################
   output$callcenter1_view <- renderPlotly({
     
+    
     if(input$Year=="2016"){
-      betterg2 <- plot_ly(xmodlist3.16[[as.numeric(input$CD)]]) %>%
+      #thisCD <- xmodlist3.16[[as.numeric(input$CD)]]
+      betterg2 <- plot_ly(newx7.16[(newx7.16$CD == as.numeric(input$CD)) & (newx7.16$RequestType == as.character(input$RequestType)),]) %>%
         add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
                   marker = list(color = 'indianred'),
                   hoverinfo = "all") %>%
@@ -244,7 +258,8 @@ server <- function(input, output) {
                yaxis = list(side = 'left', title = 'Number of Cases', showgrid = FALSE, zeroline = FALSE))
       betterg2
     }else if(input$Year=="2017"){
-      betterg3 <- plot_ly(xmodlist3.17[[as.numeric(input$CD)]]) %>%
+      #thisCD <- xmodlist3.17[[as.numeric(input$CD)]]
+      betterg3 <- plot_ly(newx7.17[(newx7.17$CD == as.numeric(input$CD)) & (newx7.17$RequestType == as.character(input$RequestType)),]) %>%
         add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
                   marker = list(color = 'indianred'),
                   hoverinfo = "all") %>%
@@ -258,19 +273,20 @@ server <- function(input, output) {
     }
   })
   output$callcenter2_view <- renderPlotly({
-    if(input$YEAR == 2016){
-      p2 <- plot_ly(
-        x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
-        z = valuematavg(xmodlist16,as.numeric(input$Week)),
-        type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
-      p2
-    }else if(input$YEAR == 2017){
+    if(as.character(input$YEAR) == "2017"){
       p3 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
         z = valuematavg(xmodlist,as.numeric(input$Week)),
         type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist,as.numeric(input$Week)))
       p3 
+    }else if(as.character(input$YEAR) == "2016"){
+      p2 <- plot_ly(
+        x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
+        z = valuematavg(xmodlist16,as.numeric(input$Week)),
+        type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
+      p2
     }
+    
   })
   
   
@@ -297,6 +313,11 @@ server <- function(input, output) {
         ggplotly(yearly)
       }
   })
+  
+  #################################
+  #     Issue 7: Catch Basin      #
+  #################################
+  
   
 }
 # end server
