@@ -1,4 +1,4 @@
-setwd("C:/Users//conor//Documents//GitHub//Data-LA-Repo-") # set your local working directory
+setwd("~/GitHub//Data-LA-Repo-") # set your local working directory
 # If the script doesn't run:
 # 1) make sure you're in the correct working directory
 # 2) make sure you installed all the pacakges
@@ -99,7 +99,7 @@ body <- dashboardBody(
       selectInput(input = 'Year',
                   label = 'Select Which Year',
                   choices = c("2016","2017"),
-                  selected = "2016"),
+                  selected = "2017"),
       selectInput(input = 'RequestType',
                   label = 'Select Which Request Type',
                   choice = c("Bulky Items","Dead Animal Removal","Electronic Waste","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other","Feedback"),
