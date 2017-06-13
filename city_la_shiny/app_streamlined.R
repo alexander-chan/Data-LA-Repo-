@@ -65,7 +65,7 @@ LA <- get_map('Los Angeles')
 # ui --------------------------------------------------------------------------- 
 header <- dashboardHeader(
   title = tags$a(href = "",
-                 tags$img(src = "./city_la_shiny/www/seal_of_los_angeles.png", height = "45", width = "40",
+                 tags$img(src = "C:/Users/Joseph/Downloads/seal_of_los_angeles.png", height = "45", width = "40",
                           style = "display: block; padding-top: 5px;"))
 )
 
@@ -128,15 +128,19 @@ body <- dashboardBody(
     selectInput(input = 'Year',
                 label = 'Select Which Year',
                 choices = c("2016","2017"),
-                selected = "2017"),
+                selected = "2016"),
+    selectInput(input = 'RequestType',
+                label = 'Select Which Request Type',
+                choice = c("Bulky Items","Dead Animal Removal","Electronic Waste","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other","Feedback"),
+                selected = "Bulky Items"),
     mainPanel(plotlyOutput("callcenter1_view"))),
   
   tabItem(
     tabName = "callcentertiming",
-    selectInput(input = 'Year',
+    selectInput(input = 'YEAR',
                 label = 'Select Which Year',
-                choices = c(2016,2017),
-                selected = 2017),
+                choices = c("2016","2017"),
+                selected = "2017"),
     selectInput(input = 'Week',
                 label = 'Select Which Week',
                 choices = 1:52,
@@ -233,8 +237,10 @@ server <- function(input, output) {
   #################################
   output$callcenter1_view <- renderPlotly({
     
+    
     if(input$Year=="2016"){
-      betterg2 <- plot_ly(xmodlist3.16[[as.numeric(input$CD)]]) %>%
+      #thisCD <- xmodlist3.16[[as.numeric(input$CD)]]
+      betterg2 <- plot_ly(newx7.16[(newx7.16$CD == as.numeric(input$CD)) & (newx7.16$RequestType == as.character(input$RequestType)),]) %>%
         add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
                   marker = list(color = 'indianred'),
                   hoverinfo = "all") %>%
@@ -246,7 +252,8 @@ server <- function(input, output) {
                yaxis = list(side = 'left', title = 'Number of Cases', showgrid = FALSE, zeroline = FALSE))
       betterg2
     }else if(input$Year=="2017"){
-      betterg3 <- plot_ly(xmodlist3.17[[as.numeric(input$CD)]]) %>%
+      #thisCD <- xmodlist3.17[[as.numeric(input$CD)]]
+      betterg3 <- plot_ly(newx7.17[(newx7.17$CD == as.numeric(input$CD)) & (newx7.17$RequestType == as.character(input$RequestType)),]) %>%
         add_trace(x = ~week, y = ~nReported, type = 'bar', name = 'Reported',
                   marker = list(color = 'indianred'),
                   hoverinfo = "all") %>%
@@ -260,19 +267,20 @@ server <- function(input, output) {
     }
   })
   output$callcenter2_view <- renderPlotly({
-    if(as.numeric(input$Year) == 2016){
-    p2 <- plot_ly(
-      x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
-      z = valuematavg(xmodlist16,as.numeric(input$Week)),
-      type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
-    p2
-    }else if(as.numeric(input$Year) == 2017){
+    if(as.character(input$YEAR) == "2017"){
       p3 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
         z = valuematavg(xmodlist,as.numeric(input$Week)),
         type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist,as.numeric(input$Week)))
       p3 
+    }else if(as.character(input$YEAR) == "2016"){
+    p2 <- plot_ly(
+      x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
+      z = valuematavg(xmodlist16,as.numeric(input$Week)),
+      type="heatmap", hoverinfo = "x+y+text",text = valuemat(xmodlist16,as.numeric(input$Week)))
+    p2
     }
+   
   })
   
   #################################
