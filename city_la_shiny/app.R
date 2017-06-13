@@ -29,7 +29,7 @@ sidebar <- dashboardSidebar(
     menuItem("Overflows", tabName = "overflow", icon = icon("bar-chart")),
     menuItem("Heat Maps", tabName = 'heatmap', icon = icon("bar-chart")),
     menuItem("Flow Data", tabName = "flow", icon = icon("bar-chart")),
-    menuItem("Catch Basin", tabName = "basin", icon = icon("bar-chart")),
+   # menuItem("Catch Basin", tabName = "basin", icon = icon("bar-chart")),
     menuItem("Call Center Requests", tabName = "callcenterrequests",icon = icon("bar-chart")),
     menuItem("Call Center Timing",tabName = "callcentertiming",icon = icon("table"))
   )
@@ -82,13 +82,13 @@ body <- dashboardBody(
                   selected = 'All'),
       mainPanel(plotlyOutput("flow_view"))),
 
-    tabItem(
-      tabName = "basin",
-      selectInput(input = 'nyears',
-                  label = 'Select Calendar Year',
-                  choices = c(unique(catch_basin$`Calendar Year`), "All"),
-                  selected = "All"),
-      mainPanel(plotlyOutput("basin_view"))),
+    # tabItem(
+    #   tabName = "basin",
+    #   selectInput(input = 'nyears',
+    #               label = 'Select Calendar Year',
+    #               choices = c(unique(catch_basin$`Calendar Year`), "All"),
+    #               selected = "All"),
+    #   mainPanel(plotlyOutput("basin_view"))),
     
     tabItem(
       tabName = "callcenterrequests",
@@ -134,17 +134,18 @@ server <- function(input, output) {
   output$sankey_view <- renderGvis({
     
     df <- data.frame(origin=c(
-      rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2#3",3)),
-      visit=c(
-        rep(c("Q3 #1", "Q3 #2", "Q3 #3"),3)),
-      weights = weights_transition )
+      rep("Q2 #1",3), rep("Q2 #2",3), rep("Q2 #3",3), 
+      rep("Q3 #1",3), rep("Q3 #2",3), rep("Q3 #3",3)),
+      visit=c(rep(c("Q3 #1", "Q3 #2", "Q3 #3"),3),
+              rep(c("Q4 #1", "Q4 #2", "Q4 #3"),3)),
+      weights = c(weights_transition_q2q3, weights_transition_q3q4 ))
     
-    gvisSankey(df, from="Q2", 
-               to="Q3", weight="Count",
+    gvisSankey(df, from="origin", 
+               to="visit", weight="weights",
                options=list(
                  height=500,
-                 width=1000,
-                 caption="Flow of CleanStat Ratings in Los Angeles from 2016 Q2 to Q3",
+                 width=800,
+                 caption="Flow of CleanStat Ratings in Los Angeles Q2, Q3, Q4",
                  sankey="{link:{color:{fill:'lightblue'}}}"
                ))   
   })
@@ -319,33 +320,33 @@ server <- function(input, output) {
   #################################
   #     Issue 7: Catch Basin      #
   #################################
-  output$basin_view <- renderPlotly({
-    if(input$nyears %in% unique(catch_basin$`Calendar Year`)) {
-      yearly <- ggplot(catch_basin[catch_basin$`Calendar Year` == input$nyears,], aes(`Month Factor`)) +
-        geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
-        theme_bw() +
-        ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for Calendar Year ', input$nyears)) +
-        scale_x_discrete(limits = month_names2)+
-        scale_fill_manual(values=colors)+
-        guides(fill = guide_legend(reverse = TRUE)) +
-        xlab("Month")
-      
-      ggplotly(yearly)
-    }
-    else{
-      yearly <- ggplot(catch_basin, aes(`Month Factor`)) +
-        geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
-        theme_bw() +
-        ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for All Years')) +
-        scale_x_discrete(limits = month_names2)+
-        scale_fill_manual(values=colors)+
-        guides(fill = guide_legend(reverse = TRUE)) +
-        xlab("Month")
-      
-      ggplotly(yearly)
-    }
-  })
-  
+#   output$basin_view <- renderPlotly({
+#     if(input$nyears %in% unique(catch_basin$`Calendar Year`)) {
+#       yearly <- ggplot(catch_basin[catch_basin$`Calendar Year` == input$nyears,], aes(`Month Factor`)) +
+#         geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
+#         theme_bw() +
+#         ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for Calendar Year ', input$nyears)) +
+#         scale_x_discrete(limits = month_names2)+
+#         scale_fill_manual(values=colors)+
+#         guides(fill = guide_legend(reverse = TRUE)) +
+#         xlab("Month")
+#       
+#       ggplotly(yearly)
+#     }
+#     else{
+#       yearly <- ggplot(catch_basin, aes(`Month Factor`)) +
+#         geom_bar(aes(weight = NUMBER.OF.CATCH.BASIN.CLEANED, fill = `Month Factor`)) +
+#         theme_bw() +
+#         ggtitle(paste('Bar Chart of Catch Basins Cleaned by Month for All Years')) +
+#         scale_x_discrete(limits = month_names2)+
+#         scale_fill_manual(values=colors)+
+#         guides(fill = guide_legend(reverse = TRUE)) +
+#         xlab("Month")
+#       
+#       ggplotly(yearly)
+#     }
+#   })
+#   
 }
 # end server
 
