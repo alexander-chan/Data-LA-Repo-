@@ -1,3 +1,4 @@
+#Requires RSocrata to be able to load in data on the fly
 #catch_basin <- read.socrata("https://data.lacity.org/A-Livable-and-Sustainable-City/LASAN-Number-of-Catch-Basins-Cleaned/8a3v-f7cr")
 catch_basin <- read.csv('./city_la_shiny/data/LASAN___Number_of_Catch_Basins_Cleaned.csv')
 
