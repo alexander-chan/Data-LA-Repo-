@@ -245,8 +245,9 @@ server <- function(input, output) {
   # Issue 8: Call Center          #
   #################################
   output$callcenter1_view <- renderPlotly({
-    
-    
+    #Bar + Line Graph
+    #There is an issue with the line graph function when there aren't many observations for a give week/type
+    #addition of Request Type made xmodlist3 deprecated
     if(input$Year=="2016"){
       #thisCD <- xmodlist3.16[[as.numeric(input$CD)]]
       betterg2 <- plot_ly(newx7.16[(newx7.16$CD == as.numeric(input$CD)) & (newx7.16$RequestType == as.character(input$RequestType)),]) %>%
@@ -276,6 +277,8 @@ server <- function(input, output) {
     }
   })
   output$callcenter2_view <- renderPlotly({
+    #Mosaic plot
+    #There is an issue with 2016 Week 4 and 5 - Possibly data related
     if(as.character(input$YEAR) == "2017"){
       p3 <- plot_ly(
         x = c("Bulky Items","Dead Animal Removal","Electronic Waste","Feedback","Homeless Encampment","Illegal Dumping Pickup","Metal/Household Appliances","Other"), y = c(as.character(15:1)),
