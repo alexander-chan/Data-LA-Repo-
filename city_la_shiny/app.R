@@ -22,6 +22,7 @@ header <- dashboardHeader(
                           style = "display: block; padding-top: 5px;"))
 )
 
+#create tab names and icons
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Sankey Diagram", tabName = "sankey", icon = icon("bar-chart")),
@@ -35,9 +36,8 @@ sidebar <- dashboardSidebar(
   )
 )
 
+#create input options (dropdowns etc) and render plots
 body <- dashboardBody(
-  #useShinyjs(),
-  #extendShinyjs(text = scroll),
   tags$body(id = "body"),
   includeCSS("./city_la_shiny/www/custom.css"),
   
@@ -126,6 +126,7 @@ body <- dashboardBody(
 ui <- dashboardPage(header, sidebar, body)
 
 # server ----------------------------------------------------------------------- 
+#create plots given user input
 server <- function(input, output) { 
   
   #################################
@@ -219,7 +220,6 @@ server <- function(input, output) {
       
       ggplotly(monthly)
     }
-  })
   })
   #################################
   #           Heatmaps            #

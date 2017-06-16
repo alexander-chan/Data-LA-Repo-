@@ -12,8 +12,8 @@ month_names <- c('JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 
 #creating month factor (calendar months)
 sewer_overflow$`Month Factor` <- factor(sewer_overflow$Month, levels = rev(month_names))
 
-#creating month number factor (fiscal months)
-sewer_overflow$`Month Number Factor` <- factor(sewer_overflow$`Month Number`, levels = 12:1)
+#blue gradient option
+#colors <- c("#2C00E5","#2811DE","#2422D8","#2034D1","#1C45CB","#1856C4","#1468BE","#1079B7","#0C8AB1","#089CAA","#04ADA4","#00BF9E")
 
 
 #rainbow colors
