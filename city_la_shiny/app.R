@@ -154,6 +154,7 @@ server <- function(input, output) {
   # Issue 4: Miles/sewage cleaned #
   #################################
   output$sewer_view <- renderPlotly({
+    #Prints data for the year selected
     if(input$n_years %in% unique(miles_sewage_cleaned$`Calendar Year`)) {
       monthly <- ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% input$n_years,], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
@@ -167,19 +168,20 @@ server <- function(input, output) {
       ggplotly(monthly)
     }
     else {
+      #Prints data for all years
       monthly <- ggplot(data = miles_sewage_cleaned[miles_sewage_cleaned$`Calendar Year` %in% c(2014:2016),], aes(`Month Factor`)) +
-      geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
-      theme_bw() +
-      ggtitle(paste('Bar Chart of Miles Cleaned by Month for Calendar Years between', 
-                     min(miles_sewage_cleaned$`Calendar Year`),
-                     "to",
-                     max(miles_sewage_cleaned$`Calendar Year`))) +
-      scale_x_discrete(limits = month_names)+
-      scale_fill_manual(values=colors)+
-      guides(fill = guide_legend(reverse = TRUE)) +
+        geom_bar(aes(weight = `Miles of Sewer Cleaned`, fill = `Month Factor`)) +
+        theme_bw() +
+        ggtitle(paste('Bar Chart of Miles Cleaned by Month for Calendar Years between', 
+                      min(miles_sewage_cleaned$`Calendar Year`),
+                      "to",
+                      max(miles_sewage_cleaned$`Calendar Year`))) +
+        scale_x_discrete(limits = month_names)+
+        scale_fill_manual(values=colors)+
+        guides(fill = guide_legend(reverse = TRUE)) +
         xlab("Month")
-    
-    ggplotly(monthly)
+      
+      ggplotly(monthly)
     }
   })
   
@@ -188,6 +190,7 @@ server <- function(input, output) {
   # Issue 5: Overflow             #
   #################################
   output$overflow_view <- renderPlotly({
+    #Prints data for a selected year
     if(input$n_years2 %in% unique(sewer_overflow$`Calendar Year`)) {
       monthly <- ggplot(data = sewer_overflow[sewer_overflow$`Calendar Year` %in% input$n_years2,], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Sanitary Sewer Overflows`, fill = `Month Factor`)) +
@@ -201,13 +204,14 @@ server <- function(input, output) {
       ggplotly(monthly)
     }
     else {
+      #Prints data for all the years
       monthly <- ggplot(data = sewer_overflow[sewer_overflow$`Calendar Year` %in% c(2015:2016),], aes(`Month Factor`)) +
         geom_bar(aes(weight = `Sanitary Sewer Overflows`, fill = `Month Factor`)) +
         theme_bw() +
         ggtitle(paste('Overflow Bar Chart by Month for Calendar Years',
-                min(sewer_overflow$`Calendar Year`),
-                "to",
-                max(sewer_overflow$`Calendar Year`))) +
+                      min(sewer_overflow$`Calendar Year`),
+                      "to",
+                      max(sewer_overflow$`Calendar Year`))) +
         scale_x_discrete(limits = month_names) +
         scale_fill_manual(values=colors)+
         guides(fill = guide_legend(reverse = TRUE)) +
@@ -216,29 +220,34 @@ server <- function(input, output) {
       ggplotly(monthly)
     }
   })
+  })
   #################################
   #           Heatmaps            #
   #################################
-  output$heatmap_view <- renderLeaflet({    
+  output$heatmap_view <- renderLeaflet({  
+    #Note that this heatmap requires installation of both leaflet and leaflet.extras
     testSocrata2$TimeTaken <- round((testSocrata2$UpdatedDate - testSocrata2$CreatedDate)/86400)
     if('None' %in% input$n_breaks) {
+      #Constructs a regular map of Los Angeles
       leaflet(na.omit(testSocrata2[,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         fitBounds(~min(Longitude), ~min(Latitude), ~max(Longitude), ~max(Latitude))
     }
     else if('All' %in% input$n_breaks) {
+      #Constructs a heatmap of all council districts in Los Angeles
       leaflet(na.omit(testSocrata2[,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
                    blur = 20, max = 0.05, radius = 15)
     }
     else {
+      #Constructs a heatmap of selected council districts through the checkbox
       leaflet(na.omit(testSocrata2[testSocrata2$CD %in% input$n_breaks,c("Longitude", "Latitude", "CD", "TimeTaken")])) %>% 
         addProviderTiles("Thunderforest.TransportDark") %>% 
         addHeatmap(lng = ~Longitude, lat = ~Latitude, intensity = ~TimeTaken,
                    blur = 20, max = 0.05, radius = 15)
     }
-
+    
   })
   
   #################################
